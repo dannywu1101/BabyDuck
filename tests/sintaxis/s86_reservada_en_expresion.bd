@@ -1,0 +1,7 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    a = while + 1;
+}
+end

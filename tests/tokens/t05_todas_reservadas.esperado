@@ -1,0 +1,10 @@
+1 VAR var
+1 VOID void
+1 INT int
+1 FLOAT float
+1 WHILE while
+1 DO do
+1 IF if
+1 RETURN return
+1 MAIN main
+1 END end

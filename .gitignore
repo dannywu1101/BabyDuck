@@ -1,0 +1,15 @@
+# Archivos generados por Flex y Bison
+build/
+*.tab.cpp
+*.tab.hpp
+*.yy.cpp
+*.output
+
+# Ejecutable y objetos
+babyduck
+*.o
+
+# Editores / sistema
+.vscode/
+.idea/
+.DS_Store

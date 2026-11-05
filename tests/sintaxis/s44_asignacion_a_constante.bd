@@ -1,0 +1,7 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    5 = a;
+}
+end

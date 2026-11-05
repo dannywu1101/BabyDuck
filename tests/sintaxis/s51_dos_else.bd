@@ -1,0 +1,7 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    if (a > 0) print(a); else print(b); else print(a); ;
+}
+end

@@ -1,0 +1,6 @@
+program p;
+var a, b, c : int;
+main {
+    if (a < b < c) print(a); ;
+}
+end

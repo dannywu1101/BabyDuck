@@ -1,0 +1,4 @@
+program p;
+f() [ { } ];
+main { }
+end

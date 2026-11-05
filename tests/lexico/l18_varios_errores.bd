@@ -1,0 +1,9 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    a = 1 @;
+    b = 2 #;
+    a = 3 $;
+}
+end

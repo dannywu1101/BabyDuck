@@ -1,0 +1,7 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    año = 1;
+}
+end

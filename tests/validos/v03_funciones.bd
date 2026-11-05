@@ -1,0 +1,15 @@
+program funciones;
+void saluda() [
+    { print("hola"); }
+];
+int doble(n : int) [
+    { return n * 2; }
+];
+float promedio(a : float, b : float, c : float) [
+    var s : float;
+    { s = a + b + c; return s / 3.0; }
+];
+main {
+    saluda();
+}
+end

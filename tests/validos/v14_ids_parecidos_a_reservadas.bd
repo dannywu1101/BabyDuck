@@ -1,0 +1,8 @@
+program Program;
+var iff, printer, do1, end_, a_b_1, Main, X, INT : int;
+main {
+    iff = 1;
+    INT = do1 + end_;
+    Main = a_b_1;
+}
+end

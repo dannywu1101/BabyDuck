@@ -1,0 +1,8 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    print("hola
+mundo");
+}
+end

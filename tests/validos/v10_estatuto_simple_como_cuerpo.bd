@@ -1,0 +1,9 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    if (a > 0) read(a); else f(a); ;
+    while (a > 0) do print(a); ;
+    if (a > 0) while (b > 0) do b = 0; ; else [ a = 1; b = 2; ] ;
+}
+end

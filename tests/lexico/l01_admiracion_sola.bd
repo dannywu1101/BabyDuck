@@ -1,0 +1,6 @@
+program p;
+var a, b : int;
+main {
+    if (a ! b) print(a); ;
+}
+end

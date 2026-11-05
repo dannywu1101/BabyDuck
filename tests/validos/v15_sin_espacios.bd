@@ -1,0 +1,1 @@
+program p;var x,y:int;void g(a:int,b:float)[var c:float;{c=b;}];main{x=1+2*3;g(x,1.5);if(x>0)print(x);else[];while(x!=0)do x=x-1;;}end

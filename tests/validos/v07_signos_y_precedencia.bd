@@ -1,0 +1,11 @@
+program expresiones;
+var a, b : int;
+    c : float;
+main {
+    a = -3;
+    b = a - -3;
+    c = +2.5 * (a + b) / -1.0 - 4;
+    a = (a + b) * (a - b);
+    print(a > b, a < b, a != b);
+}
+end

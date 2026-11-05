@@ -1,0 +1,12 @@
+
+
+   program	p ;
+
+	var
+		a :	int ;
+main
+{
+		a   =   1 ;
+}
+end
+

@@ -1,0 +1,9 @@
+program decl;
+var a : int;
+    b, c, d : float;
+    e : int;
+main {
+    read(a);
+    print("a vale", a, "y b vale", b);
+}
+end

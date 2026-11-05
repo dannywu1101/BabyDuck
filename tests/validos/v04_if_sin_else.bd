@@ -1,0 +1,7 @@
+program condicion;
+var a : int;
+main {
+    a = 1;
+    if (a < 10) a = a + 1; ;
+}
+end

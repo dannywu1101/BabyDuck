@@ -1,0 +1,7 @@
+program p;
+main {
+    print("");
+    print("a;b{}[]()=+-*/ @#$ % ñ 123 program");
+    print("uno", "dos", 3, 4.5);
+}
+end

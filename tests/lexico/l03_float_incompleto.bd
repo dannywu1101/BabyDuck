@@ -1,0 +1,6 @@
+program p;
+var a : float;
+main {
+    a = 3.;
+}
+end

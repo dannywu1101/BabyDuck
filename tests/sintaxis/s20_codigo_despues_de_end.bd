@@ -1,0 +1,4 @@
+program p;
+main { }
+end
+x = 1;

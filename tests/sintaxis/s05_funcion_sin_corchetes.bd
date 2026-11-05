@@ -1,0 +1,4 @@
+program p;
+void f() { print(1); };
+main { }
+end

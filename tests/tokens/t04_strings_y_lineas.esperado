@@ -1,0 +1,12 @@
+1 PRINT print
+1 LPAREN (
+1 CTE_STRING "hola, mundo!"
+1 COMMA ,
+1 ID x
+1 RPAREN )
+1 SEMICOLON ;
+3 READ read
+3 LPAREN (
+3 ID y
+3 RPAREN )
+3 SEMICOLON ;

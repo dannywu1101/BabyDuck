@@ -1,0 +1,14 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    a = 0;
+    a = 007;
+    a = 0.0;
+    a = 00.50;
+    a = 123456789;
+    a = 3.14159;
+    a = +5 - +2.5;
+    a = -b * -3 / +b;
+}
+end

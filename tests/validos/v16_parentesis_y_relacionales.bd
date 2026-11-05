@@ -1,0 +1,10 @@
+program p;
+var a, b : int;
+int f(n : int) [ { return n; } ];
+main {
+    a = ((((b))));
+    a = (a < b) * 2;
+    a = ((a + b) * (a - b)) / (1 + (2 * 3));
+    if ((a > b) != (b > a)) print(a); ;
+}
+end

@@ -1,0 +1,6 @@
+program p;
+void uno(a : int) [ { } ];
+float dos(a : float, b : int) [ var x : int; y, z : float; { x = a; } ];
+int tres() [ var q : int; { return q; } ];
+main { }
+end

@@ -1,0 +1,5 @@
+program p;
+void f() [ { } ];
+var x : int;
+main { }
+end

@@ -1,0 +1,9 @@
+program llamadas;
+var x : int;
+int f(n : int) [ { return n + 1; } ];
+main {
+    x = f(2) + 1;
+    x = f(f(x)) * f(3 - 1);
+    print(f(x), "fin");
+}
+end
