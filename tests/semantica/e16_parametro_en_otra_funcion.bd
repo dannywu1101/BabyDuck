@@ -1,0 +1,5 @@
+program p;
+void f(n : int) [ { print(n); } ];
+void g() [ { print(n); } ];
+main { }
+end

@@ -1,8 +1,13 @@
-# BabyDuck - Etapa 1 (Flex + Bison + C++)
+# BabyDuck - Etapa 2 (Flex + Bison + C++)
 CXX      = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-unused-function -Wno-sign-compare -Ibuild
+CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-unused-function -Wno-sign-compare -Iinclude -Isrc -Ibuild
 BUILD    = build
 TARGET   = babyduck
+
+# Codigo propio (el parser y el scanner los generan Bison y Flex)
+SOURCES  = src/main.cpp src/semantica.cpp src/directorio_funciones.cpp \
+           src/tabla_variables.cpp src/cubo_semantico.cpp
+HEADERS  = $(wildcard src/*.hpp include/*.h)
 
 all: $(TARGET)
 
@@ -16,8 +21,8 @@ $(BUILD)/parser.tab.cpp $(BUILD)/parser.tab.hpp: src/parser.y
 $(BUILD)/lexer.yy.cpp: src/lexer.l $(BUILD)/parser.tab.hpp
 	flex -o $(BUILD)/lexer.yy.cpp src/lexer.l
 
-$(TARGET): $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp src/main.cpp
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp src/main.cpp
+$(TARGET): $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp $(SOURCES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp $(SOURCES)
 
 test: $(TARGET)
 	@bash tests/run_tests.sh

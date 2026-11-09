@@ -1,0 +1,10 @@
+program p;
+var a, b, a : int;
+    c : float;
+void f(x : int, x : float) [
+    var y, y : int;
+    { }
+];
+void f() [ var z : int; { } ];
+main { }
+end

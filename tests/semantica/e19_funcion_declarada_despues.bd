@@ -1,0 +1,7 @@
+program p;
+void primera() [ { segunda(); } ];
+void segunda() [ { } ];
+main {
+    segunda();
+}
+end

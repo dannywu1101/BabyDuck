@@ -5,15 +5,28 @@
 
 %{
 #include <cstdio>
+#include "semantica.hpp"
 
 int yylex();
 void yyerror(const char* msg);
 
 extern int yylineno;
+
+/* Analizador semantico: guarda el Directorio de Funciones y las Tablas de Variables */
+Semantica semantica;
 %}
 
 /* Mensajes de error con "unexpected X, expecting Y" (sintaxis de Bison 2.x) */
 %error-verbose
+
+/* @N.first_line da la linea de cada simbolo (la pone el scanner) */
+%locations
+
+/* Valores semanticos (Etapa 2) */
+%union {
+    const char* nombre;   /* lexema de un ID */
+    Tipo tipo;            /* tipo de "type" y "func_type" */
+}
 
 /* ---------- Tokens (35) ---------- */
 
@@ -36,19 +49,26 @@ extern int yylineno;
 %token LBRACKET "["   RBRACKET "]"
 
 /* Identificadores y constantes (4) */
-%token ID         "identificador"
+%token <nombre> ID "identificador"
 %token CTE_INT    "constante entera"
 %token CTE_FLOAT  "constante flotante"
 %token CTE_STRING "constante string"
+
+%type <tipo> type func_type
+%type <nombre> f_call_expr
 
 %start programa
 
 %%
 
+/* Los puntos neuralgicos se marcan con PN1 ... PN10.
+   Cada uno llama a un metodo de Semantica (src/semantica.hpp). */
+
 /* ---------- Programa y variables ---------- */
 
 programa
-    : PROGRAM ID SEMICOLON vars_opc funcs_list MAIN body END
+    : PROGRAM ID { semantica.iniciarPrograma($2, @2.first_line); }   /* PN1 */
+      SEMICOLON vars_opc funcs_list MAIN body END
     ;
 
 vars_opc
@@ -66,7 +86,7 @@ vars
     ;
 
 var_decl
-    : id_list COLON type SEMICOLON
+    : id_list COLON type SEMICOLON { semantica.declararVariables($3); }   /* PN3 */
     ;
 
 var_decl_list
@@ -75,28 +95,32 @@ var_decl_list
     ;
 
 id_list
-    : ID id_list_p
+    : ID { semantica.agregarIdPendiente($1, @1.first_line); }   /* PN2 */
+      id_list_p
     ;
 
 id_list_p
-    : COMMA ID id_list_p
+    : COMMA ID { semantica.agregarIdPendiente($2, @2.first_line); }   /* PN2 */
+      id_list_p
     | /* vacio */
     ;
 
 type
-    : INT
-    | FLOAT
+    : INT     { $$ = Tipo::ENTERO; }
+    | FLOAT   { $$ = Tipo::FLOTANTE; }
     ;
 
 /* ---------- Funciones ---------- */
 
 funcs
-    : func_type ID LPAREN params RPAREN LBRACKET vars_opc body RBRACKET SEMICOLON
+    : func_type ID { semantica.iniciarFuncion($1, $2, @2.first_line); }   /* PN4 */
+      LPAREN params RPAREN LBRACKET vars_opc body RBRACKET SEMICOLON
+      { semantica.terminarFuncion(); }                                   /* PN6 */
     ;
 
 func_type
-    : VOID
-    | type
+    : VOID    { $$ = Tipo::VACIO; }
+    | type    { $$ = $1; }
     ;
 
 params
@@ -110,7 +134,7 @@ params_p
     ;
 
 param
-    : ID COLON type
+    : ID COLON type { semantica.agregarParametro($1, $3, @1.first_line); }   /* PN5 */
     ;
 
 /* ---------- Cuerpo y estatutos ---------- */
@@ -136,7 +160,8 @@ statement
     ;
 
 assign
-    : ID ASSIGN expresion SEMICOLON
+    : ID ASSIGN { semantica.usarVariable($1, @1.first_line); }   /* PN7 */
+      expresion SEMICOLON
     ;
 
 condition
@@ -167,21 +192,22 @@ print_list
     ;
 
 read
-    : READ LPAREN ID RPAREN SEMICOLON
+    : READ LPAREN ID RPAREN SEMICOLON { semantica.usarVariable($3, @3.first_line); }   /* PN7 */
     ;
 
 return_st
-    : RETURN expresion SEMICOLON
+    : RETURN expresion SEMICOLON { semantica.validarReturn(@1.first_line); }   /* PN10 */
     ;
 
-/* Llamada como estatuto (con ';') */
+/* Llamada como estatuto (con ';'): puede ser de cualquier funcion, incluso void */
 f_call
-    : f_call_expr SEMICOLON
+    : f_call_expr SEMICOLON { }
     ;
 
 /* Llamada como valor dentro de una expresion (sin ';') */
 f_call_expr
     : ID LPAREN args RPAREN
+      { semantica.llamarFuncion($1, @1.first_line); $$ = $1; }   /* PN8 */
     ;
 
 args
@@ -238,11 +264,11 @@ factor
     | PLUS valor
     | MINUS valor
     | valor
-    | f_call_expr
+    | f_call_expr { semantica.usarLlamadaComoValor($1, @1.first_line); }   /* PN9 */
     ;
 
 valor
-    : ID
+    : ID { semantica.usarVariable($1, @1.first_line); }   /* PN7 */
     | cte
     ;
 

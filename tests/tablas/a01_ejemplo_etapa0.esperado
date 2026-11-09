@@ -1,0 +1,18 @@
+Directorio de Funciones
+  nombre         tipo     linea  parametros
+  ejemplo        program  1      -
+  suma           void     5      (int, int)
+
+Tabla de Variables: ejemplo (globales)
+  nombre         tipo   categoria        linea
+  x              int    variable global  2
+  y              int    variable global  2
+  z              float  variable global  3
+
+Tabla de Variables: suma
+  nombre         tipo   categoria        linea
+  a              int    parametro        5
+  b              int    parametro        5
+  r              int    variable local   6
+
+Programa valido

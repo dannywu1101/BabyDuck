@@ -1,0 +1,23 @@
+Directorio de Funciones
+  nombre         tipo     linea  parametros
+  ambitos        program  1      -
+  f              int      4      (float)
+  g              void     8      (int)
+
+Tabla de Variables: ambitos (globales)
+  nombre         tipo   categoria        linea
+  x              int    variable global  2
+  y              int    variable global  2
+  z              float  variable global  3
+
+Tabla de Variables: f
+  nombre         tipo   categoria        linea
+  x              float  parametro        4
+  y              float  variable local   5
+
+Tabla de Variables: g
+  nombre         tipo   categoria        linea
+  a              int    parametro        8
+  x              int    variable local   9
+
+Programa valido

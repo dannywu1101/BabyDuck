@@ -1,0 +1,8 @@
+program p;
+int calcula() [ { return 1; } ];
+int calcula(n : int) [
+    var k : int;
+    { k = n + sinDeclarar; return k; }
+];
+main { }
+end

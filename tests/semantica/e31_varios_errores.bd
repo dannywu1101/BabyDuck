@@ -1,0 +1,10 @@
+program p;
+var a, a : int;
+void f(x : int, x : int) [ { y = x; } ];
+void f() [ { } ];
+main {
+    b = 1;
+    read(c);
+    return a;
+}
+end

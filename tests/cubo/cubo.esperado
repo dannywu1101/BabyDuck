@@ -1,0 +1,48 @@
+Cubo semantico de BabyDuck
+Formato: izquierdo operador derecho -> resultado
+
+Aritmeticos
+  int    +  int    -> int
+  int    +  float  -> float
+  float  +  int    -> float
+  float  +  float  -> float
+  int    -  int    -> int
+  int    -  float  -> float
+  float  -  int    -> float
+  float  -  float  -> float
+  int    *  int    -> int
+  int    *  float  -> float
+  float  *  int    -> float
+  float  *  float  -> float
+  int    /  int    -> int
+  int    /  float  -> float
+  float  /  int    -> float
+  float  /  float  -> float
+
+Relacionales (el int resultante vale 1 si es verdadero y 0 si es falso)
+  int    >  int    -> int
+  int    >  float  -> int
+  float  >  int    -> int
+  float  >  float  -> int
+  int    <  int    -> int
+  int    <  float  -> int
+  float  <  int    -> int
+  float  <  float  -> int
+  int    != int    -> int
+  int    != float  -> int
+  float  != int    -> int
+  float  != float  -> int
+
+Asignacion (variable = expresion)
+  int    =  int    -> int
+  int    =  float  -> error
+  float  =  int    -> float
+  float  =  float  -> float
+
+Signo delante de un valor
+  +int    -> int
+  +float  -> float
+  -int    -> int
+  -float  -> float
+
+Cualquier operacion con un operando void o error da error.

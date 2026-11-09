@@ -1,0 +1,10 @@
+program nombres;
+void uno(a : int) [ var b : float; { b = a; } ];
+void dos(a : float) [ var b : int; { b = 1; print(a, b); } ];
+int tres(uno : int) [ var dos : int; { dos = uno; uno(dos); return dos; } ];
+main {
+    uno(1);
+    dos(2.0);
+    print(tres(3));
+}
+end

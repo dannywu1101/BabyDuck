@@ -1,0 +1,7 @@
+program p;
+int f(n : int) [ { return n; } ];
+void g() [ { } ];
+main {
+    f(g());
+}
+end

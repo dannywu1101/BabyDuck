@@ -1,0 +1,5 @@
+program p;
+main {
+    imprime(1, 2);
+}
+end

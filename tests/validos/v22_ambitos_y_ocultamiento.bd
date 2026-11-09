@@ -1,0 +1,16 @@
+program ambitos;
+var x, y : int;
+    z : float;
+int f(x : float) [
+    var y : float;
+    { y = x * 2.0; z = y; return 1; }
+];
+void g(a : int) [
+    var x : int;
+    { x = a + y; print(x, z); }
+];
+main {
+    x = f(z);
+    g(x);
+}
+end

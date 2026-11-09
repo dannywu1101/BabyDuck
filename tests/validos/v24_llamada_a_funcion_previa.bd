@@ -1,0 +1,10 @@
+program previas;
+var r : float;
+float mitad(v : float) [ { return v / 2.0; } ];
+float cuarto(v : float) [ { return mitad(mitad(v)); } ];
+void muestra(v : float) [ { print("valor", cuarto(v)); } ];
+main {
+    r = cuarto(8.0);
+    muestra(r);
+}
+end

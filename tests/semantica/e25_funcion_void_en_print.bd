@@ -1,0 +1,6 @@
+program p;
+void saluda() [ { print("hola"); } ];
+main {
+    print(saluda());
+}
+end

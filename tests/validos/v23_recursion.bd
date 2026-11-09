@@ -1,0 +1,14 @@
+program recursion;
+var n : int;
+int factorial(k : int) [
+    { if (k < 2) return 1; else return k * factorial(k - 1); ; }
+];
+void cuenta(k : int) [
+    { if (k > 0) [ print(k); cuenta(k - 1); ] ; }
+];
+main {
+    read(n);
+    print(factorial(n));
+    cuenta(n);
+}
+end

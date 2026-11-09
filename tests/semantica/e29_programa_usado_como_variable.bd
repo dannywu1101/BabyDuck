@@ -1,0 +1,6 @@
+program p;
+var a : int;
+main {
+    a = p;
+}
+end

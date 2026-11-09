@@ -1,0 +1,17 @@
+program ejemplo;
+var x, y : int;
+    z : float;
+
+void suma(a : int, b : int) [
+    var r : int;
+    { r = a + b; print("resultado", r); }
+];
+
+main {
+    x = 5;
+    read(y);
+    if (x > y) print(x); else print(y); ;
+    while (x != 0) do [ x = x - 1; ] ;
+    suma(x, y);
+}
+end

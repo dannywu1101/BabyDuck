@@ -1,0 +1,7 @@
+program p;
+var a : int;
+main {
+    if (x > 0) a = 1; ;
+    while (a != y) do a = a + 1; ;
+}
+end

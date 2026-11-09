@@ -1,0 +1,6 @@
+program p;
+var a : int;
+main {
+    a = (a + c) * 2;
+}
+end

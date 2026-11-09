@@ -1,14 +1,19 @@
 // ============================================================
-// BabyDuck - Programa principal (Etapa 1)
+// BabyDuck - Programa principal (Etapa 2)
 //
 // Uso:
-//   ./babyduck archivo.bd            -> analiza lexico + sintaxis
+//   ./babyduck archivo.bd            -> analiza lexico, sintaxis y semantica
 //   ./babyduck --tokens archivo.bd   -> solo imprime los tokens
+//   ./babyduck --tablas archivo.bd   -> analiza e imprime el Directorio de
+//                                       Funciones y las Tablas de Variables
+//   ./babyduck --cubo                -> imprime el cubo semantico
 //
 // Codigo de salida: 0 = programa valido, 1 = hay errores, 2 = uso incorrecto
 // ============================================================
 #include <cstdio>
 #include <cstring>
+#include "cubo_semantico.hpp"
+#include "semantica.hpp"
 #include "parser.tab.hpp"
 
 extern FILE* yyin;
@@ -51,9 +56,14 @@ static int dumpTokens() {
     return lexErrors == 0 ? 0 : 1;
 }
 
-static int parseProgram() {
+static int parseProgram(bool showTables) {
     int result = yyparse();
-    if (result == 0 && lexErrors == 0) {
+    // Las tablas solo estan completas si la sintaxis fue correcta
+    if (showTables && result == 0) {
+        semantica.directorio().imprimir();
+        printf("\n");
+    }
+    if (result == 0 && lexErrors == 0 && semantica.errores() == 0) {
         printf("Programa valido\n");
         return 0;
     }
@@ -62,9 +72,16 @@ static int parseProgram() {
 }
 
 int main(int argc, char* argv[]) {
+    if (argc == 2 && strcmp(argv[1], "--cubo") == 0) {
+        cubo::imprimir();
+        return 0;
+    }
+
     bool onlyTokens = argc == 3 && strcmp(argv[1], "--tokens") == 0;
-    if (argc != 2 && !onlyTokens) {
-        fprintf(stderr, "Uso: %s [--tokens] archivo.bd\n", argv[0]);
+    bool showTables = argc == 3 && strcmp(argv[1], "--tablas") == 0;
+    if (argc != 2 && !onlyTokens && !showTables) {
+        fprintf(stderr, "Uso: %s [--tokens | --tablas] archivo.bd\n", argv[0]);
+        fprintf(stderr, "     %s --cubo\n", argv[0]);
         return 2;
     }
 
@@ -75,7 +92,7 @@ int main(int argc, char* argv[]) {
         return 2;
     }
 
-    int status = onlyTokens ? dumpTokens() : parseProgram();
+    int status = onlyTokens ? dumpTokens() : parseProgram(showTables);
     fclose(yyin);
     return status;
 }

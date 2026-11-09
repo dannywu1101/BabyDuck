@@ -1,0 +1,10 @@
+program firmas;
+void ninguno() [ { } ];
+int uno(a : int) [ { return a; } ];
+float tres(a : float, b : int, c : float) [
+    var s : float;
+        i, j : int;
+    { s = a + b + c; return s; }
+];
+main { }
+end

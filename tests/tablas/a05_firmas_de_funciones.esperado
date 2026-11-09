@@ -1,0 +1,27 @@
+Directorio de Funciones
+  nombre         tipo     linea  parametros
+  firmas         program  1      -
+  ninguno        void     2      ()
+  uno            int      3      (int)
+  tres           float    4      (float, int, float)
+
+Tabla de Variables: firmas (globales)
+  (sin variables)
+
+Tabla de Variables: ninguno
+  (sin variables)
+
+Tabla de Variables: uno
+  nombre         tipo   categoria        linea
+  a              int    parametro        3
+
+Tabla de Variables: tres
+  nombre         tipo   categoria        linea
+  a              float  parametro        4
+  b              int    parametro        4
+  c              float  parametro        4
+  s              float  variable local   5
+  i              int    variable local   6
+  j              int    variable local   6
+
+Programa valido

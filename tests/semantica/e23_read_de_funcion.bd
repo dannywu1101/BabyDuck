@@ -1,0 +1,6 @@
+program p;
+void f() [ { } ];
+main {
+    read(f);
+}
+end

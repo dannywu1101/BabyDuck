@@ -1,0 +1,5 @@
+program p;
+var total : int;
+int total() [ { return 1; } ];
+main { }
+end

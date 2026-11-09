@@ -1,0 +1,21 @@
+Error semantico (linea 2): 'a' doblemente declarado (ya existe como variable global en la linea 2)
+Error semantico (linea 4): 'x' doblemente declarado (ya existe como parametro en la linea 4)
+Error semantico (linea 5): 'y' doblemente declarado (ya existe como variable local en la linea 5)
+Error semantico (linea 8): 'f' doblemente declarado (ya existe como funcion en la linea 4)
+Directorio de Funciones
+  nombre         tipo     linea  parametros
+  p              program  1      -
+  f              void     4      (int)
+
+Tabla de Variables: p (globales)
+  nombre         tipo   categoria        linea
+  a              int    variable global  2
+  b              int    variable global  2
+  c              float  variable global  3
+
+Tabla de Variables: f
+  nombre         tipo   categoria        linea
+  x              int    parametro        4
+  y              int    variable local   5
+
+Programa invalido

@@ -1,0 +1,6 @@
+program p;
+var a : int;
+main {
+    a = doble(a) + 1;
+}
+end

@@ -1,0 +1,7 @@
+program p;
+var a : int;
+int f() [ { return 1; } ];
+main {
+    a = f + 1;
+}
+end

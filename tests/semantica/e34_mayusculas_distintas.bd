@@ -1,0 +1,6 @@
+program p;
+var total : int;
+main {
+    Total = 1;
+}
+end

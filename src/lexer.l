@@ -5,10 +5,23 @@
 
 %{
 #include <cstdio>
+#include <string>
+#include <unordered_set>
+#include "tipos.hpp"          /* parser.tab.hpp usa Tipo en su %union */
 #include "parser.tab.hpp"
 
 /* Contador de errores lexicos (lo lee main.cpp) */
 int lexErrors = 0;
+
+/* Antes de cada accion: guarda la linea del token para el parser (@N.first_line) */
+#define YY_USER_ACTION yylloc.first_line = yylineno;
+
+/* Guarda cada nombre distinto una sola vez. El puntero que recibe el
+   parser sigue siendo valido hasta que termina el programa. */
+static const char* guardarLexema(const char* texto) {
+    static std::unordered_set<std::string> lexemas;
+    return lexemas.insert(texto).first->c_str();
+}
 
 static void lexError(const char* msg) {
     fprintf(stderr, "Error lexico (linea %d): %s '%s'\n", yylineno, msg, yytext);
@@ -74,12 +87,12 @@ espacios    [ \t\r\n]+
 "]"             { return RBRACKET; }
 
  /* ----- Identificadores y constantes ----- */
- /* (En la Etapa 1 solo importa el tipo de token; el lexema queda en yytext.
-     El valor se pasara al parser en la Etapa 2, con la tabla de simbolos.) */
+ /* El ID manda su lexema al parser (para las tablas de la Etapa 2).
+    El valor de las constantes se usara en la Etapa 3. */
 {cte_float}     { return CTE_FLOAT; }
 {cte_int}       { return CTE_INT; }
 {cte_string}    { return CTE_STRING; }
-{id}            { return ID; }
+{id}            { yylval.nombre = guardarLexema(yytext); return ID; }
 
  /* ----- Ignorados ----- */
 {espacios}      { /* se descartan */ }

@@ -1,0 +1,9 @@
+program p;
+void f() [
+    var temp : int;
+    { temp = 1; }
+];
+main {
+    temp = 2;
+}
+end

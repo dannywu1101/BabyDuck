@@ -1,0 +1,8 @@
+program p;
+void f() [
+    var x : int;
+        y, x : float;
+    { }
+];
+main { }
+end

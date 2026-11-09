@@ -1,0 +1,8 @@
+Error semantico (linea 2): 'a' doblemente declarado (ya existe como variable global en la linea 2)
+Error semantico (linea 3): 'x' doblemente declarado (ya existe como parametro en la linea 3)
+Error semantico (linea 3): variable 'y' no declarada
+Error semantico (linea 4): 'f' doblemente declarado (ya existe como funcion en la linea 3)
+Error semantico (linea 6): variable 'b' no declarada
+Error semantico (linea 7): variable 'c' no declarada
+Error semantico (linea 8): return no se permite en main, solo dentro de una funcion
+Programa invalido
