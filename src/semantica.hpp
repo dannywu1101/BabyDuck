@@ -1,8 +1,13 @@
 // ============================================================
 // BabyDuck - Analizador semantico (Etapa 2)
+//
+// El parser solo revisa que el programa este bien escrito. Esta
+// clase revisa que tenga sentido: que no se declare un nombre dos
+// veces, que no se use una variable que no existe, etc.
+//
 // Las acciones del parser (parser.y) llaman a estos metodos en los
-// puntos neuralgicos (PN) para crear y llenar el Directorio de
-// Funciones y las Tablas de Variables, y para validar los usos.
+// puntos neuralgicos PN1 a PN10. Con ellos se crea y se llena el
+// Directorio de Funciones y las Tablas de Variables.
 // ============================================================
 #ifndef SEMANTICA_HPP
 #define SEMANTICA_HPP
@@ -13,7 +18,7 @@
 
 class Semantica {
 public:
-    // ----- Declaraciones -----
+    // ----- Declaraciones (crean y llenan las tablas) -----
     // PN1  program id ;      -> crea la entrada del programa (ambito global)
     void iniciarPrograma(const std::string& nombre, int linea);
     // PN2  cada id de "var a, b : tipo;" espera su tipo en una fila
@@ -27,35 +32,46 @@ public:
     // PN6  ] ;               -> cierra la funcion y regresa al ambito global
     void terminarFuncion();
 
-    // ----- Usos -----
-    // PN7  id en una asignacion, read o expresion: debe ser una variable visible
-    void usarVariable(const std::string& nombre, int linea);
+    // ----- Usos (validan contra las tablas) -----
+    // PN7  id en una asignacion, read o expresion: debe ser una variable visible.
+    //      Regresa el tipo de la variable, o Tipo::ERROR si no existe.
+    Tipo usarVariable(const std::string& nombre, int linea);
     // PN8  id ( args )       -> debe ser una funcion declarada
     void llamarFuncion(const std::string& nombre, int linea);
-    // PN9  llamada dentro de una expresion: la funcion no puede ser void
-    void usarLlamadaComoValor(const std::string& nombre, int linea);
+    // PN9  llamada dentro de una expresion: la funcion no puede ser void.
+    //      Regresa el tipo que regresa la funcion, o Tipo::ERROR si no se puede usar.
+    Tipo usarLlamadaComoValor(const std::string& nombre, int linea);
     // PN10 return            -> solo en funciones que regresan int o float
     void validarReturn(int linea);
 
+    // Imprime "Error semantico (linea N): mensaje" y lo cuenta.
+    // Tambien lo usa el generador de cuadruplos (errores de tipos).
+    void error(int linea, const std::string& mensaje);
+
+    // Cuantos errores semanticos se han reportado
     int errores() const { return numErrores; }
+
+    // Acceso de solo lectura al directorio (para imprimirlo con --tablas)
     const DirectorioFunciones& directorio() const { return directorio_; }
 
 private:
+    // Un id de "var a, b : int;" que todavia no sabe su tipo
     struct IdPendiente {
         std::string nombre;
         int linea;
     };
 
-    DirectorioFunciones directorio_;
-    Queue<IdPendiente> pendientes;
-    std::string nombrePrograma;
-    std::string nombreAmbito;      // programa (global/main) o funcion actual
+    DirectorioFunciones directorio_;   // todas las funciones y sus tablas de variables
+    Queue<IdPendiente> pendientes;     // ids que esperan su tipo (PN2 -> PN3)
+    std::string nombrePrograma;        // nombre del programa: su tabla guarda las globales
+    std::string nombreAmbito;          // donde estamos: el programa (global/main) o una funcion
     // Una funcion doblemente declarada no entra al directorio, pero su
     // cuerpo se sigue revisando en este ambito aparte.
     FuncInfo descartada;
     bool enDescartada = false;
     int numErrores = 0;
 
+    // Ayudas internas (explicadas en semantica.cpp)
     FuncInfo& global();
     FuncInfo& ambitoActual();
     bool enFuncion() const;
@@ -63,7 +79,6 @@ private:
     bool yaExisteEnGlobal(const std::string& nombre, int linea);
     void reportarDuplicado(const std::string& nombre, int linea,
                            const char* comoQue, int lineaPrevia);
-    void error(int linea, const std::string& mensaje);
 };
 
 // Instancia unica que usan el parser y main (definida en parser.y)

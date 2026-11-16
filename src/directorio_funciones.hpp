@@ -11,6 +11,7 @@
 #include "HashTable.h"
 #include "tabla_variables.hpp"
 
+// Lo que se guarda de cada funcion (y del programa)
 struct FuncInfo {
     std::string nombre;
     Tipo tipoRetorno;               // void, int o float
@@ -37,8 +38,8 @@ public:
     void imprimir() const;
 
 private:
-    HashTable<std::string, size_t> indice;
-    std::vector<FuncInfo> funciones;
+    HashTable<std::string, size_t> indice;   // nombre -> posicion en el vector
+    std::vector<FuncInfo> funciones;         // las funciones, en orden de declaracion
 };
 
 #endif

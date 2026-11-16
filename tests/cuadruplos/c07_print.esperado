@@ -1,0 +1,17 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    print     _            _            "hola"
+  2    print     _            _            a
+  3    *         b            2            t1
+  4    +         a            t1           t2
+  5    print     _            _            t2
+  6    print     _            _            "a vale"
+  7    print     _            _            a
+  8    print     _            _            "y b vale"
+  9    print     _            _            b
+  10   >         a            b            t3
+  11   print     _            _            t3
+  12   -         0            a            t4
+  13   print     _            _            t4
+
+Programa valido

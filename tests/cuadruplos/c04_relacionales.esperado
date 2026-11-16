@@ -1,0 +1,17 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    >         a            b            t1
+  2    =         t1           _            c
+  3    <         a            b            t2
+  4    =         t2           _            c
+  5    !=        a            b            t3
+  6    =         t3           _            c
+  7    +         a            1            t4
+  8    *         b            2            t5
+  9    >         t4           t5           t6
+  10   =         t6           _            c
+  11   >         a            b            t7
+  12   +         t7           1            t8
+  13   =         t8           _            c
+
+Programa valido

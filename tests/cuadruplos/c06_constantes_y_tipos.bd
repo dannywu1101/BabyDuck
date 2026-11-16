@@ -1,0 +1,11 @@
+program p;
+var a : int;
+    x, y : float;
+main {
+    a = 5;
+    x = 2.5;
+    x = a;
+    y = x * 2 + a / 3;
+    a = a / 2;
+}
+end

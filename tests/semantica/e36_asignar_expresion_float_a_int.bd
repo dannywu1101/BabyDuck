@@ -1,0 +1,9 @@
+program p;
+var a, b : int;
+    x : float;
+main {
+    a = b * 1.5;
+    a = b + x;
+    a = -x;
+}
+end

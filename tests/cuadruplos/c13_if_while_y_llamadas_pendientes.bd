@@ -1,0 +1,10 @@
+program p;
+var a, b : int;
+int doble(n : int) [ { return n * 2; } ];
+main {
+    if (a > b) a = 1; else a = 2;;
+    while (a < 10) do a = a + 1;;
+    doble(a + 1);
+    b = doble(a) + 1;
+}
+end

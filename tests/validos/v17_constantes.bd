@@ -1,5 +1,5 @@
 program p;
-var a, b : int;
+var a : float; b : int;
 int f(n : int) [ { return n; } ];
 main {
     a = 0;

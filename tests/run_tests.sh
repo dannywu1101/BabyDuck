@@ -1,20 +1,25 @@
 #!/bin/bash
 # ============================================================
-# Test-plan de BabyDuck (Etapas 1 y 2)
-#   tests/tokens/    -> salida de --tokens igual a *.esperado
-#   tests/validos/   -> el programa debe aceptarse (codigo 0)
-#   tests/sintaxis/  -> debe fallar con "Error sintactico"
-#   tests/lexico/    -> debe fallar con "Error lexico"
-#   tests/semantica/ -> codigo 1 y mensajes iguales a *.esperado
-#   tests/tablas/    -> salida de --tablas igual a *.esperado
-#   tests/cubo/      -> salida de --cubo igual a cubo.esperado
-#   Uso del programa -> argumentos invalidos dan codigo 2
+# Test-plan de BabyDuck (Etapas 1, 2 y 3)
+#   tests/tokens/     -> salida de --tokens igual a *.esperado
+#   tests/validos/    -> el programa debe aceptarse (codigo 0)
+#   tests/sintaxis/   -> debe fallar con "Error sintactico"
+#   tests/lexico/     -> debe fallar con "Error lexico"
+#   tests/semantica/  -> codigo 1 y mensajes iguales a *.esperado
+#   tests/tablas/     -> salida de --tablas igual a *.esperado
+#   tests/cubo/       -> salida de --cubo igual a cubo.esperado
+#   tests/cuadruplos/ -> salida de --cuadruplos igual a *.esperado
+#   Uso del programa  -> argumentos invalidos dan codigo 2
+#
+# Cada caso es un archivo .bd (un programa BabyDuck). Los .esperado
+# guardan la salida correcta, y la prueba pasa si la salida es identica.
 # ============================================================
-cd "$(dirname "$0")"
+cd "$(dirname "$0")"     # las rutas son relativas a la carpeta tests/
 BIN=../babyduck
-pass=0
-fail=0
+pass=0                   # cuantas pruebas pasaron
+fail=0                   # cuantas fallaron
 
+# Imprimen el resultado de una prueba y lo cuentan
 ok()   { echo "  [OK]    $1"; pass=$((pass + 1)); }
 bad()  { echo "  [FALLA] $1  ($2)"; fail=$((fail + 1)); }
 
@@ -90,6 +95,10 @@ else
     bad "cubo" "salida distinta a lo esperado"
 fi
 
+# Cuadruplos: la fila completa debe ser identica a la esperada
+echo "== Cuadruplos =="
+expect_output cuadruplos --cuadruplos
+
 # Uso incorrecto del programa: debe terminar con codigo 2
 expect_usage() {
     local name=$1
@@ -107,7 +116,8 @@ expect_usage "u04_opcion_invalida" --otra validos/v01_minimo.bd
 expect_usage "u05_demasiados_argumentos" --tokens validos/v01_minimo.bd extra
 expect_usage "u06_tablas_sin_archivo" --tablas
 expect_usage "u07_cubo_con_archivo" --cubo validos/v01_minimo.bd
+expect_usage "u08_cuadruplos_sin_archivo" --cuadruplos
 
 echo
 echo "Resultado: $pass pasaron, $fail fallaron"
-[ $fail -eq 0 ]
+[ $fail -eq 0 ]     # el script termina con error si alguna prueba fallo

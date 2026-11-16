@@ -1,4 +1,4 @@
-# BabyDuck – Compilador (Etapa 2: Semántica)
+# BabyDuck – Compilador (Etapa 3: Cuádruplos)
 
 Danny Wu · A01286362 · TC3002B Compiladores
 
@@ -7,7 +7,7 @@ Danny Wu · A01286362 · TC3002B Compiladores
 - **Flex 2.6.4**: genera el scanner a partir de `src/lexer.l`.
 - **GNU Bison 2.3** (parser LALR(1)): genera el parser a partir de `src/parser.y`.
 - **g++ con C++17**: compila el código generado y el código propio de `src/`.
-- **HashTable y Queue** de la actividad previa (`include/`): base del Directorio de Funciones, las Tablas de Variables y la fila de ids pendientes.
+- **HashTable, Queue y Stack** de la actividad previa (`include/`): base del Directorio de Funciones, las Tablas de Variables, las pilas de operandos, tipos y operadores, y la fila de cuádruplos.
 
 Flex y Bison ya vienen con las Command Line Tools de Xcode en macOS. No hay que instalar nada extra.
 
@@ -17,13 +17,15 @@ Flex y Bison ya vienen con las Command Line Tools de Xcode en macOS. No hay que 
 compilador/
 ├── include/
 │   ├── HashTable.h              # actividad previa (tabla hash)
-│   └── Queue.h                  # actividad previa (fila)
+│   ├── Queue.h                  # actividad previa (fila)
+│   └── Stack.h                  # actividad previa (pila)
 ├── src/
 │   ├── lexer.l                  # expresiones regulares (Flex)
 │   ├── parser.y                 # gramática + puntos neurálgicos (Bison)
 │   ├── semantica.*              # acciones de los puntos neurálgicos y validaciones
 │   ├── directorio_funciones.*   # Directorio de Funciones
 │   ├── tabla_variables.*        # Tabla de Variables
+│   ├── cuadruplos.*             # pilas, fila de cuádruplos y traducción (Etapa 3)
 │   ├── cubo_semantico.*         # cubo semántico
 │   ├── tipos.hpp                # tipos de dato (int, float, void)
 │   └── main.cpp                 # programa principal
@@ -35,6 +37,7 @@ compilador/
 │   ├── semantica/    # programas con error semántico (.bd + .esperado)
 │   ├── tablas/       # salida de --tablas (.bd + .esperado)
 │   ├── cubo/         # salida de --cubo
+│   ├── cuadruplos/   # salida de --cuadruplos (.bd + .esperado)
 │   └── run_tests.sh  # corre todo el test-plan
 ├── Makefile
 └── .gitignore
@@ -47,8 +50,9 @@ make                         # genera parser/scanner y compila ./babyduck
 ./babyduck archivo.bd        # análisis léxico, sintáctico y semántico
 ./babyduck --tokens a.bd     # solo muestra los tokens (línea, token, lexema)
 ./babyduck --tablas a.bd     # muestra el Directorio de Funciones y las Tablas de Variables
+./babyduck --cuadruplos a.bd # muestra la fila de cuádruplos
 ./babyduck --cubo            # muestra el cubo semántico
-make test                    # corre los 193 test-cases
+make test                    # corre los 214 test-cases
 make clean                   # borra lo generado
 ```
 

@@ -1,0 +1,7 @@
+program p;
+var a : int;
+float mitad(n : int) [ { return n / 2.0; } ];
+main {
+    a = mitad(a);
+}
+end

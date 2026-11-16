@@ -1,0 +1,15 @@
+program p;
+var a, b : int;
+    x : float;
+int uno() [ { return 1; } ];
+main {
+    a = b + 2;
+    a = b / 2;
+    a = b > 2;
+    a = x != 2.5;
+    x = a;
+    x = a + 2.5;
+    x = uno();
+    a = uno() * 2;
+}
+end

@@ -1,4 +1,10 @@
-# BabyDuck - Etapa 2 (Flex + Bison + C++)
+# BabyDuck - Etapa 3 (Flex + Bison + C++)
+#
+#   make        genera el parser y el scanner, y compila ./babyduck
+#   make test   corre todo el test-plan
+#   make clean  borra lo generado
+
+# Compilador y opciones: C++17, con avisos, y las carpetas donde buscar los .h
 CXX      = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Wno-unused-function -Wno-sign-compare -Iinclude -Isrc -Ibuild
 BUILD    = build
@@ -6,7 +12,8 @@ TARGET   = babyduck
 
 # Codigo propio (el parser y el scanner los generan Bison y Flex)
 SOURCES  = src/main.cpp src/semantica.cpp src/directorio_funciones.cpp \
-           src/tabla_variables.cpp src/cubo_semantico.cpp
+           src/tabla_variables.cpp src/cubo_semantico.cpp src/cuadruplos.cpp
+# Si cambia cualquier header, se vuelve a compilar
 HEADERS  = $(wildcard src/*.hpp include/*.h)
 
 all: $(TARGET)
@@ -21,12 +28,15 @@ $(BUILD)/parser.tab.cpp $(BUILD)/parser.tab.hpp: src/parser.y
 $(BUILD)/lexer.yy.cpp: src/lexer.l $(BUILD)/parser.tab.hpp
 	flex -o $(BUILD)/lexer.yy.cpp src/lexer.l
 
+# Compila todo junto en el ejecutable ./babyduck
 $(TARGET): $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp $(SOURCES) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(BUILD)/parser.tab.cpp $(BUILD)/lexer.yy.cpp $(SOURCES)
 
+# Corre las pruebas (primero compila si hace falta)
 test: $(TARGET)
 	@bash tests/run_tests.sh
 
+# Borra la carpeta build y el ejecutable
 clean:
 	rm -rf $(BUILD) $(TARGET)
 

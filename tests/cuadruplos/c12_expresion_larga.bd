@@ -1,0 +1,7 @@
+program p;
+var a, b, c, d, e : int;
+    x : float;
+main {
+    x = a + b * (c - d) / e - -a * 2.5 > (b + 1) * c;
+}
+end

@@ -1,0 +1,12 @@
+program p;
+var g : float;
+void f(n : int) [
+    var r : int;
+    {
+        n = g;
+        r = 1.0;
+        g = n;
+    }
+];
+main { }
+end

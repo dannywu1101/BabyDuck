@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <vector>
 
+// Todo lo de este bloque solo se usa dentro de este archivo
 namespace {
 
 constexpr int NUM_OPERADORES = 8;
@@ -26,10 +27,13 @@ constexpr Tipo CUBO[NUM_OPERADORES][NUM_OPERANDOS][NUM_OPERANDOS] = {
     /* =  */ { { I, E }, { F, F } },
 };
 
+// Solo int y float se pueden operar (void y error no)
 bool esNumerico(Tipo tipo) { return tipo == Tipo::ENTERO || tipo == Tipo::FLOTANTE; }
 
+// Posicion del tipo dentro del cubo: int = 0, float = 1
 int indice(Tipo tipo) { return tipo == Tipo::ENTERO ? 0 : 1; }
 
+// Texto de cada operador (para imprimir el cubo)
 const char* simbolo(Operador op) {
     switch (op) {
         case Operador::SUMA:           return "+";
@@ -45,16 +49,19 @@ const char* simbolo(Operador op) {
 
 }
 
+// Consulta el cubo. Un operando void o error no esta en la tabla: da error.
 Tipo cubo::resultado(Operador op, Tipo izq, Tipo der) {
     if (!esNumerico(izq) || !esNumerico(der)) return Tipo::ERROR;
     return CUBO[static_cast<int>(op)][indice(izq)][indice(der)];
 }
 
+// El signo (+x o -x) solo aplica a int y float, y no cambia el tipo
 Tipo cubo::resultadoUnario(Operador op, Tipo operando) {
     bool esSigno = op == Operador::SUMA || op == Operador::RESTA;
     return esSigno && esNumerico(operando) ? operando : Tipo::ERROR;
 }
 
+// Imprime todas las combinaciones del cubo, agrupadas por tipo de operador
 void cubo::imprimir() {
     struct Grupo {
         const char* titulo;
@@ -70,6 +77,7 @@ void cubo::imprimir() {
     };
     const Tipo operandos[] = { Tipo::ENTERO, Tipo::FLOTANTE };
 
+    // Por cada grupo: cada operador con cada pareja de tipos (izq, der)
     printf("Cubo semantico de BabyDuck\n");
     printf("Formato: izquierdo operador derecho -> resultado\n");
     for (const Grupo& grupo : grupos) {

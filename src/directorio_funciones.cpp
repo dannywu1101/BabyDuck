@@ -1,6 +1,8 @@
 #include "directorio_funciones.hpp"
 #include <cstdio>
 
+// Igual que en la tabla de variables: la funcion va al final del vector
+// y la tabla hash guarda su posicion.
 bool DirectorioFunciones::agregar(const FuncInfo& funcion) {
     if (indice.contains(funcion.nombre)) return false;
     indice.put(funcion.nombre, funciones.size());
@@ -8,11 +10,13 @@ bool DirectorioFunciones::agregar(const FuncInfo& funcion) {
     return true;
 }
 
+// Solo para consultar: regresa nullptr si el nombre no es una funcion
 const FuncInfo* DirectorioFunciones::buscar(const std::string& nombre) const {
     if (!indice.contains(nombre)) return nullptr;
     return &funciones[indice.get(nombre)];
 }
 
+// Para modificar una funcion que ya existe (agregarle parametros y variables)
 FuncInfo& DirectorioFunciones::obtener(const std::string& nombre) {
     return funciones[indice.get(nombre)];
 }
@@ -29,6 +33,7 @@ static std::string firma(const FuncInfo& funcion) {
 }
 
 void DirectorioFunciones::imprimir() const {
+    // Primero la lista de funciones con su tipo y su firma
     printf("Directorio de Funciones\n");
     printf("  %-14s %-8s %-6s %s\n", "nombre", "tipo", "linea", "parametros");
     for (const FuncInfo& funcion : funciones) {
@@ -37,6 +42,7 @@ void DirectorioFunciones::imprimir() const {
                firma(funcion).c_str());
     }
 
+    // Despues, la tabla de variables de cada una
     for (const FuncInfo& funcion : funciones) {
         printf("\nTabla de Variables: %s%s\n", funcion.nombre.c_str(),
                funcion.esPrograma ? " (globales)" : "");
