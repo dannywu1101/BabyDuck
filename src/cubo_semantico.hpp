@@ -1,6 +1,8 @@
 // ============================================================
 // BabyDuck - Cubo semantico
 // Dice que tipo resulta de combinar dos operandos con un operador.
+// Ejemplos: int + float -> float,  int > int -> int,  int = float -> error
+// Lo usa el generador de cuadruplos para saber el tipo de cada resultado.
 // ============================================================
 #ifndef CUBO_SEMANTICO_HPP
 #define CUBO_SEMANTICO_HPP

@@ -1,0 +1,9 @@
+program p;
+var a, b, c, d : int;
+main {
+    a = (b + c) * d;
+    a = b * (c + d);
+    a = ((b + c) * (d - a)) / (b - 1);
+    a = (b);
+}
+end

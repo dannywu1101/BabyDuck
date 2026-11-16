@@ -10,14 +10,16 @@
 #include "HashTable.h"
 #include "tipos.hpp"
 
+// Donde se declaro la variable
 enum class Categoria { GLOBAL, PARAMETRO, LOCAL };
 
 const char* nombreCategoria(Categoria categoria);
 
+// Lo que se guarda de cada variable
 struct VarInfo {
     std::string nombre;
-    Tipo tipo;
-    Categoria categoria;
+    Tipo tipo;             // int o float
+    Categoria categoria;   // global, parametro o local
     int linea;   // linea donde se declaro
 };
 
@@ -31,13 +33,15 @@ public:
     // Regresa la variable, o nullptr si no existe en esta tabla
     const VarInfo* buscar(const std::string& nombre) const;
 
+    // Cuantas variables tiene la tabla
     size_t tamano() const { return variables.size(); }
 
+    // Imprime la tabla en orden de declaracion (modo --tablas)
     void imprimir() const;
 
 private:
-    HashTable<std::string, size_t> indice;
-    std::vector<VarInfo> variables;
+    HashTable<std::string, size_t> indice;   // nombre -> posicion en el vector
+    std::vector<VarInfo> variables;          // las variables, en orden de declaracion
 };
 
 #endif

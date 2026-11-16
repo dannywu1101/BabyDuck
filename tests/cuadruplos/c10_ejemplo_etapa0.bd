@@ -1,0 +1,20 @@
+program ejemplo;
+var x, y : int;
+    z : float;
+
+void suma(a : int, b : int) [
+    var r : int;
+    {
+        r = a + b;
+        print("La suma es", r);
+    }
+];
+
+main {
+    x = 5;
+    y = 10;
+    z = 2.5;
+    print(x + y * 2, "resultado");
+    read(x);
+}
+end

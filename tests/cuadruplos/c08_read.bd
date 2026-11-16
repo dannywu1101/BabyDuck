@@ -1,0 +1,10 @@
+program p;
+var a : int;
+    x : float;
+main {
+    read(a);
+    read(x);
+    x = x + a;
+    print(x);
+}
+end

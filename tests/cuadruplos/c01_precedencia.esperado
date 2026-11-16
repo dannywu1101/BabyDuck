@@ -1,0 +1,15 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    *         c            d            t1
+  2    +         b            t1           t2
+  3    =         t2           _            a
+  4    *         b            c            t3
+  5    +         t3           d            t4
+  6    =         t4           _            a
+  7    *         c            d            t5
+  8    +         b            t5           t6
+  9    /         a            2            t7
+  10   -         t6           t7           t8
+  11   =         t8           _            a
+
+Programa valido

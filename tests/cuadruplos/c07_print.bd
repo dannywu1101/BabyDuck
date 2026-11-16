@@ -1,0 +1,10 @@
+program p;
+var a, b : int;
+main {
+    print("hola");
+    print(a);
+    print(a + b * 2);
+    print("a vale", a, "y b vale", b);
+    print(a > b, -a);
+}
+end

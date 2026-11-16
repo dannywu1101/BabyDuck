@@ -1,0 +1,22 @@
+program p;
+var g : int;
+void muestra(a : int, b : float) [
+    var suma : float;
+    {
+        suma = a + b;
+        print("suma", suma);
+    }
+];
+int cuadrado(n : int) [
+    var r : int;
+    {
+        r = n * n;
+        g = g + 1;
+        return r;
+    }
+];
+main {
+    g = 0;
+    print("listo");
+}
+end

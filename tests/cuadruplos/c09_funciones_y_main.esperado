@@ -1,0 +1,14 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    +         a            b            t1
+  2    =         t1           _            suma
+  3    print     _            _            "suma"
+  4    print     _            _            suma
+  5    *         n            n            t2
+  6    =         t2           _            r
+  7    +         g            1            t3
+  8    =         t3           _            g
+  9    =         0            _            g
+  10   print     _            _            "listo"
+
+Programa valido
