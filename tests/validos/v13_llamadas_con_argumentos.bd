@@ -1,12 +1,14 @@
 program p;
 var a, b : int;
 int f(n : int) [ { return n; } ];
+void g() [ { print(a); } ];
+void h(x : int, y : int, z : int, w : float) [ { print(x); } ];
 main {
-    f();
+    g();
     f(1);
-    f(a, b, 3, 4.5);
-    f(a + b * 2, (a), -3);
-    f(a > b, a != b);
+    h(a, b, 3, 4.5);
+    h(a + b * 2, (a), -3, 1);
+    f(a > b);
     f(f(f(1)));
 }
 end

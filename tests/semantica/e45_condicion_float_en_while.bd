@@ -1,0 +1,6 @@
+program p;
+var x : float;
+main {
+    while (x * 2.0) do x = x + 1;;
+}
+end

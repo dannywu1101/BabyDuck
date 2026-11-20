@@ -1,17 +1,27 @@
 Fila de cuadruplos
   #    operador  izquierdo    derecho      resultado
-  1    print     _            _            "hola"
-  2    print     _            _            a
-  3    *         b            2            t1
-  4    +         a            t1           t2
-  5    print     _            _            t2
-  6    print     _            _            "a vale"
-  7    print     _            _            a
-  8    print     _            _            "y b vale"
-  9    print     _            _            b
-  10   >         a            b            t3
-  11   print     _            _            t3
-  12   -         0            a            t4
-  13   print     _            _            t4
+  1    goto      _            _            2
+  2    print     _            _            9000
+  3    print     _            _            1000
+  4    *         1001         7000         5000
+  5    +         1000         5000         5001
+  6    print     _            _            5001
+  7    print     _            _            9001
+  8    print     _            _            1000
+  9    print     _            _            9002
+  10   print     _            _            1001
+  11   >         1000         1001         5002
+  12   print     _            _            5002
+  13   -         7001         1000         5003
+  14   print     _            _            5003
+  15   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  9000       letrero  "hola"
+  7000       int      2
+  9001       letrero  "a vale"
+  9002       letrero  "y b vale"
+  7001       int      0
 
 Programa valido

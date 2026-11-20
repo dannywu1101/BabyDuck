@@ -1,8 +1,9 @@
 Directorio de Funciones
-  nombre         tipo     linea  parametros
-  minimo         program  1      -
+  nombre         tipo     linea  parametros       inicio  retorno
+  minimo         program  1      -                2       -
 
 Tabla de Variables: minimo (globales)
   (sin variables)
+  Memoria: variables int=0 float=0, temporales int=0 float=0
 
 Programa valido

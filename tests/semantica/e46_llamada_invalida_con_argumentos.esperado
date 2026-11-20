@@ -1,0 +1,4 @@
+Error semantico (linea 4): funcion 'noexiste' no declarada
+Error semantico (linea 4): variable 'zz' no declarada
+Error semantico (linea 5): 'a' es una variable, no una funcion
+Programa invalido

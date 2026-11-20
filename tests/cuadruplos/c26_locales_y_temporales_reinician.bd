@@ -1,0 +1,8 @@
+program p;
+var g : int;
+int f(a : int) [ var b : int; { b = a + 1; return b * 2; } ];
+int h(c : int) [ var d : int; { d = c + 3; return d * 4; } ];
+main {
+    g = f(1) + h(2);
+}
+end

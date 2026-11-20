@@ -1,23 +1,26 @@
 Directorio de Funciones
-  nombre         tipo     linea  parametros
-  ambitos        program  1      -
-  f              int      4      (float)
-  g              void     8      (int)
+  nombre         tipo     linea  parametros       inicio  retorno
+  ambitos        program  1      -                12      -
+  f              int      4      (float)          2       1002
+  g              void     8      (int)            7       -
 
 Tabla de Variables: ambitos (globales)
-  nombre         tipo   categoria        linea
-  x              int    variable global  2
-  y              int    variable global  2
-  z              float  variable global  3
+  nombre         tipo   categoria        linea  direccion
+  x              int    variable global  2      1000
+  y              int    variable global  2      1001
+  z              float  variable global  3      2000
+  Memoria: variables int=3 float=1, temporales int=1 float=0
 
 Tabla de Variables: f
-  nombre         tipo   categoria        linea
-  x              float  parametro        4
-  y              float  variable local   5
+  nombre         tipo   categoria        linea  direccion
+  x              float  parametro        4      4000
+  y              float  variable local   5      4001
+  Memoria: variables int=0 float=2, temporales int=0 float=1
 
 Tabla de Variables: g
-  nombre         tipo   categoria        linea
-  a              int    parametro        8
-  x              int    variable local   9
+  nombre         tipo   categoria        linea  direccion
+  a              int    parametro        8      3000
+  x              int    variable local   9      3001
+  Memoria: variables int=2 float=0, temporales int=1 float=0
 
 Programa valido

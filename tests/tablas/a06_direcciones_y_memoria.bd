@@ -1,0 +1,12 @@
+program p;
+var a, b : int; x : float;
+float f(n : int, m : float) [
+    var k : int; z : float;
+    { k = n + 1; z = m * k; return z; }
+];
+int g(n : int) [ { return n * 2 + 1; } ];
+main {
+    a = g(b) + 1;
+    x = f(a, 2.5) / 2;
+}
+end

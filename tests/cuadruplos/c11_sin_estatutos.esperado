@@ -1,4 +1,9 @@
 Fila de cuadruplos
-  (sin cuadruplos)
+  #    operador  izquierdo    derecho      resultado
+  1    goto      _            _            2
+  2    end       _            _            _
+
+Tabla de constantes
+  (sin constantes)
 
 Programa valido

@@ -1,14 +1,26 @@
 Fila de cuadruplos
   #    operador  izquierdo    derecho      resultado
-  1    +         a            b            t1
-  2    =         t1           _            suma
-  3    print     _            _            "suma"
-  4    print     _            _            suma
-  5    *         n            n            t2
-  6    =         t2           _            r
-  7    +         g            1            t3
-  8    =         t3           _            g
-  9    =         0            _            g
-  10   print     _            _            "listo"
+  1    goto      _            _            13
+  2    +         3000         4000         6000
+  3    =         6000         _            4001
+  4    print     _            _            9000
+  5    print     _            _            4001
+  6    endfunc   _            _            _
+  7    *         3000         3000         5000
+  8    =         5000         _            3001
+  9    +         1000         7000         5001
+  10   =         5001         _            1000
+  11   return    3001         _            1001
+  12   endfunc   _            _            _
+  13   =         7001         _            1000
+  14   print     _            _            9001
+  15   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  9000       letrero  "suma"
+  7000       int      1
+  7001       int      0
+  9001       letrero  "listo"
 
 Programa valido

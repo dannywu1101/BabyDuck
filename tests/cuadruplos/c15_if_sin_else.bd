@@ -1,0 +1,7 @@
+program p;
+var a, b : int;
+main {
+    if (a > b) a = 1;;
+    print(a);
+}
+end

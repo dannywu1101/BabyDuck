@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# Test-plan de BabyDuck (Etapas 1, 2 y 3)
+# Test-plan de BabyDuck (Etapas 1 a 4)
 #   tests/tokens/     -> salida de --tokens igual a *.esperado
 #   tests/validos/    -> el programa debe aceptarse (codigo 0)
 #   tests/sintaxis/   -> debe fallar con "Error sintactico"

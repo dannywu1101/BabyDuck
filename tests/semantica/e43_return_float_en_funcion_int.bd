@@ -1,0 +1,8 @@
+program p;
+int f(a : float) [ { return a; } ];
+int g(a : int) [ { return a / 2.0; } ];
+float h(a : int) [ { return a; } ];
+main {
+    print(f(1.0));
+}
+end

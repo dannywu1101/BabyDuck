@@ -1,0 +1,11 @@
+program p;
+var a, b, c : int;
+main {
+    if (a > b) [
+        if (b > c) c = 1; else c = 2;;
+    ] else [
+        if (a != c) c = 3;;
+    ];
+    print(c);
+}
+end

@@ -20,7 +20,8 @@ struct VarInfo {
     std::string nombre;
     Tipo tipo;             // int o float
     Categoria categoria;   // global, parametro o local
-    int linea;   // linea donde se declaro
+    int linea;             // linea donde se declaro
+    int direccion;         // direccion virtual (Etapa 4, ver memoria.hpp)
 };
 
 // - HashTable nombre -> posicion: buscar una variable es O(1) promedio.

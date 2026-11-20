@@ -1,5 +1,5 @@
 // ============================================================
-// BabyDuck - Programa principal (Etapa 3)
+// BabyDuck - Programa principal (Etapa 4)
 //
 // Uso:
 //   ./babyduck archivo.bd                -> analiza lexico, sintaxis y semantica
@@ -7,6 +7,7 @@
 //   ./babyduck --tablas archivo.bd       -> analiza e imprime el Directorio de
 //                                           Funciones y las Tablas de Variables
 //   ./babyduck --cuadruplos archivo.bd   -> analiza e imprime la fila de cuadruplos
+//                                           y la tabla de constantes
 //   ./babyduck --cubo                    -> imprime el cubo semantico
 //
 // Codigo de salida: 0 = programa valido, 1 = hay errores, 2 = uso incorrecto
@@ -15,6 +16,7 @@
 #include <cstring>
 #include "cuadruplos.hpp"
 #include "cubo_semantico.hpp"
+#include "memoria.hpp"
 #include "semantica.hpp"
 #include "parser.tab.hpp"
 
@@ -75,6 +77,8 @@ static int parseProgram(bool showTables, bool showQuads) {
     // Los cuadruplos solo se muestran si el programa no tiene ningun error
     if (showQuads && valido) {
         cuadruplos.imprimir();
+        printf("\n");
+        memoria.imprimirConstantes();
         printf("\n");
     }
 

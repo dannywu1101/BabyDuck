@@ -1,0 +1,27 @@
+Directorio de Funciones
+  nombre         tipo     linea  parametros       inicio  retorno
+  p              program  1      -                12      -
+  f              float    3      (int, float)     2       2001
+  g              int      7      (int)            8       1002
+
+Tabla de Variables: p (globales)
+  nombre         tipo   categoria        linea  direccion
+  a              int    variable global  2      1000
+  b              int    variable global  2      1001
+  x              float  variable global  2      2000
+  Memoria: variables int=3 float=2, temporales int=2 float=2
+
+Tabla de Variables: f
+  nombre         tipo   categoria        linea  direccion
+  n              int    parametro        3      3000
+  m              float  parametro        3      4000
+  k              int    variable local   4      3001
+  z              float  variable local   4      4001
+  Memoria: variables int=2 float=2, temporales int=1 float=1
+
+Tabla de Variables: g
+  nombre         tipo   categoria        linea  direccion
+  n              int    parametro        7      3000
+  Memoria: variables int=1 float=0, temporales int=2 float=0
+
+Programa valido

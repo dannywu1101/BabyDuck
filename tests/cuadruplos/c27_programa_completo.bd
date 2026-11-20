@@ -1,0 +1,19 @@
+program fibonacci;
+var n, i : int;
+int fib(k : int) [
+    {
+        if (k < 2) return k;;
+        return fib(k - 1) + fib(k - 2);
+    }
+];
+void titulo() [ { print("Serie de Fibonacci"); } ];
+main {
+    titulo();
+    read(n);
+    i = 0;
+    while (i < n) do [
+        print(fib(i));
+        i = i + 1;
+    ];
+}
+end

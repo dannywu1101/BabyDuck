@@ -1,0 +1,9 @@
+program p;
+var r : int;
+int f(a : int) [ { return a; } ];
+float g(a : int, b : int) [ { return a + b; } ];
+main {
+    r = f(g(1, 2));
+    r = f(f(1, 2), 3);
+}
+end

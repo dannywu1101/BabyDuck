@@ -19,6 +19,16 @@ struct FuncInfo {
     int linea;                      // linea donde se declaro
     std::vector<Tipo> parametros;   // firma: tipos de los parametros, en orden
     TablaVariables variables;       // parametros + locales (o las globales)
+
+    // ----- Etapa 4: lo que se necesita para llamar a la funcion -----
+    std::vector<int> dirParametros; // direccion de cada parametro, en orden
+    int inicio = 0;                 // numero del cuadruplo donde empieza su codigo
+    int dirRetorno = -1;            // direccion global donde deja el valor que regresa
+                                    // (-1 si es void o es el programa)
+    // Memoria que ocupa: cuantas variables y temporales de cada tipo.
+    // En el programa, "variables" son las globales y los temporales son los de main.
+    int variablesInt = 0, variablesFloat = 0;
+    int temporalesInt = 0, temporalesFloat = 0;
 };
 
 // - HashTable nombre -> posicion: buscar una funcion es O(1) promedio.

@@ -81,7 +81,7 @@ bool Semantica::declarar(const VarInfo& variable) {
 void Semantica::iniciarPrograma(const std::string& nombre, int linea) {
     nombrePrograma = nombre;
     nombreAmbito = nombre;
-    directorio_.agregar(FuncInfo{ nombre, Tipo::VACIO, true, linea, {}, {} });
+    directorio_.agregar(FuncInfo{ nombre, Tipo::VACIO, true, linea, {}, {}, {} });
 }
 
 // PN2  En "var a, b : int;" los nombres llegan antes que el tipo,
@@ -94,15 +94,24 @@ void Semantica::agregarIdPendiente(const std::string& nombre, int linea) {
 //      orden en que llegaron) y se declaran con ese tipo.
 void Semantica::declararVariables(Tipo tipo) {
     Categoria categoria = enFuncion() ? Categoria::LOCAL : Categoria::GLOBAL;
+    Segmento segmento = enFuncion() ? Segmento::LOCAL : Segmento::GLOBAL;
     while (!pendientes.isEmpty()) {
         IdPendiente id = pendientes.dequeue();
-        declarar(VarInfo{ id.nombre, tipo, categoria, id.linea });
+        // Cada variable recibe su direccion virtual al declararse
+        int direccion = memoria.nuevaDireccion(segmento, tipo);
+        declarar(VarInfo{ id.nombre, tipo, categoria, id.linea, direccion });
     }
 }
 
 // PN4  Empieza una funcion: se registra y su tabla se vuelve el ambito actual
 void Semantica::iniciarFuncion(Tipo tipoRetorno, const std::string& nombre, int linea) {
-    FuncInfo funcion{ nombre, tipoRetorno, false, linea, {}, {} };
+    // Cada funcion tiene su propia memoria: locales y temporales empiezan de cero
+    memoria.reiniciarLocales();
+
+    FuncInfo funcion{ nombre, tipoRetorno, false, linea, {}, {}, {} };
+    // Una funcion int o float deja el valor que regresa en una direccion
+    // global propia. Si es void, nuevaDireccion regresa -1 (no la necesita).
+    funcion.dirRetorno = memoria.nuevaDireccion(Segmento::GLOBAL, tipoRetorno);
     if (yaExisteEnGlobal(nombre, linea)) {
         // Nombre repetido: no entra al directorio, pero su cuerpo si se revisa
         descartada = funcion;
@@ -117,23 +126,54 @@ void Semantica::iniciarFuncion(Tipo tipoRetorno, const std::string& nombre, int 
 // PN5  Un parametro es una variable de la funcion, y ademas su tipo
 //      se agrega a la firma (la lista de tipos de los parametros)
 void Semantica::agregarParametro(const std::string& nombre, Tipo tipo, int linea) {
-    if (declarar(VarInfo{ nombre, tipo, Categoria::PARAMETRO, linea })) {
+    int direccion = memoria.nuevaDireccion(Segmento::LOCAL, tipo);
+    if (declarar(VarInfo{ nombre, tipo, Categoria::PARAMETRO, linea, direccion })) {
         ambitoActual().parametros.push_back(tipo);
+        ambitoActual().dirParametros.push_back(direccion);
     }
 }
 
-// PN6  Termina la funcion: se regresa al ambito global
+// PN6  Termina la funcion: se guarda cuanta memoria ocupo y se regresa
+//      al ambito global
 void Semantica::terminarFuncion() {
+    guardarMemoria(ambitoActual(), Segmento::LOCAL);
     nombreAmbito = nombrePrograma;
     enDescartada = false;
+}
+
+// ---------- Etapa 4: datos de cada funcion ----------
+
+// Anota en la funcion cuantas variables y temporales de cada tipo uso.
+// Con esto, al llamarla se sabe cuanta memoria hay que apartarle.
+void Semantica::guardarMemoria(FuncInfo& funcion, Segmento variables) {
+    funcion.variablesInt    = memoria.usadas(variables, Tipo::ENTERO);
+    funcion.variablesFloat  = memoria.usadas(variables, Tipo::FLOTANTE);
+    funcion.temporalesInt   = memoria.usadas(Segmento::TEMPORAL, Tipo::ENTERO);
+    funcion.temporalesFloat = memoria.usadas(Segmento::TEMPORAL, Tipo::FLOTANTE);
+}
+
+// PN31 Ya se leyeron los parametros y las variables: aqui empieza el codigo
+void Semantica::fijarInicioFuncion(int cuadruplo) {
+    ambitoActual().inicio = cuadruplo;
+}
+
+// PN24 main usa las variables globales, pero tiene sus propios temporales
+void Semantica::iniciarMain(int cuadruplo) {
+    memoria.reiniciarLocales();
+    global().inicio = cuadruplo;
+}
+
+// PN25 Las "variables" del programa son las globales
+void Semantica::terminarPrograma() {
+    guardarMemoria(global(), Segmento::GLOBAL);
 }
 
 // ---------- Puntos neuralgicos: usos ----------
 
 // PN7  Busca primero en el ambito actual y luego en el global
-Tipo Semantica::usarVariable(const std::string& nombre, int linea) {
-    if (const VarInfo* variable = ambitoActual().variables.buscar(nombre)) return variable->tipo;
-    if (const VarInfo* variable = global().variables.buscar(nombre)) return variable->tipo;
+const VarInfo* Semantica::usarVariable(const std::string& nombre, int linea) {
+    if (const VarInfo* variable = ambitoActual().variables.buscar(nombre)) return variable;
+    if (const VarInfo* variable = global().variables.buscar(nombre)) return variable;
 
     // No es una variable. Si es una funcion, el mensaje lo dice.
     if (const FuncInfo* funcion = directorio_.buscar(nombre)) {
@@ -143,13 +183,13 @@ Tipo Semantica::usarVariable(const std::string& nombre, int linea) {
     } else {
         error(linea, "variable '" + nombre + "' no declarada");
     }
-    return Tipo::ERROR;
+    return nullptr;
 }
 
 // PN8  El nombre debe ser una funcion del directorio
-void Semantica::llamarFuncion(const std::string& nombre, int linea) {
+const FuncInfo* Semantica::llamarFuncion(const std::string& nombre, int linea) {
     const FuncInfo* funcion = directorio_.buscar(nombre);
-    if (funcion && !funcion->esPrograma) return;   // todo bien
+    if (funcion && !funcion->esPrograma) return funcion;   // todo bien
 
     // No es una funcion: se elige el mensaje segun lo que si es
     if (funcion) {
@@ -159,29 +199,32 @@ void Semantica::llamarFuncion(const std::string& nombre, int linea) {
     } else {
         error(linea, "funcion '" + nombre + "' no declarada");
     }
+    return nullptr;
 }
 
 // PN9  Una llamada usada como valor (a = f(1) + 2;) necesita que f regrese algo
-Tipo Semantica::usarLlamadaComoValor(const std::string& nombre, int linea) {
+const FuncInfo* Semantica::usarLlamadaComoValor(const std::string& nombre, int linea) {
     // Si la funcion no existe, llamarFuncion (PN8) ya reporto el error
     const FuncInfo* funcion = directorio_.buscar(nombre);
-    if (!funcion || funcion->esPrograma) return Tipo::ERROR;
+    if (!funcion || funcion->esPrograma) return nullptr;
 
     if (funcion->tipoRetorno == Tipo::VACIO) {
         error(linea, "la funcion '" + nombre + "' es void y no regresa un valor");
-        return Tipo::ERROR;
+        return nullptr;
     }
-    return funcion->tipoRetorno;
+    return funcion;
 }
 
 // PN10 return solo tiene sentido en una funcion que regresa int o float
-void Semantica::validarReturn(int linea) {
+const FuncInfo* Semantica::validarReturn(int linea) {
     if (!enFuncion()) {
         error(linea, "return no se permite en main, solo dentro de una funcion");
-        return;
+        return nullptr;
     }
     const FuncInfo& funcion = ambitoActual();
     if (funcion.tipoRetorno == Tipo::VACIO) {
         error(linea, "la funcion '" + funcion.nombre + "' es void y no puede regresar un valor");
+        return nullptr;
     }
+    return &funcion;
 }

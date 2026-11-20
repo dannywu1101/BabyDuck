@@ -1,0 +1,30 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    goto      _            _            10
+  2    +         3000         7000         5000
+  3    =         5000         _            3001
+  4    *         4000         8000         6000
+  5    =         6000         _            4001
+  6    print     _            _            9000
+  7    print     _            _            3001
+  8    print     _            _            4001
+  9    endfunc   _            _            _
+  10   +         7000         7001         5000
+  11   =         5000         _            1000
+  12   /         1000         8000         6000
+  13   =         6000         _            2000
+  14   >         1000         7001         5001
+  15   =         5001         _            1001
+  16   print     _            _            9001
+  17   print     _            _            2000
+  18   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  7000       int      1
+  8000       float    2.5
+  9000       letrero  "local"
+  7001       int      2
+  9001       letrero  "global"
+
+Programa valido

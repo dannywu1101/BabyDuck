@@ -32,9 +32,9 @@ void TablaVariables::imprimir() const {
         printf("  (sin variables)\n");
         return;
     }
-    printf("  %-14s %-6s %-16s %s\n", "nombre", "tipo", "categoria", "linea");
+    printf("  %-14s %-6s %-16s %-6s %s\n", "nombre", "tipo", "categoria", "linea", "direccion");
     for (const VarInfo& var : variables) {
-        printf("  %-14s %-6s %-16s %d\n", var.nombre.c_str(), nombreTipo(var.tipo),
-               nombreCategoria(var.categoria), var.linea);
+        printf("  %-14s %-6s %-16s %-6d %d\n", var.nombre.c_str(), nombreTipo(var.tipo),
+               nombreCategoria(var.categoria), var.linea, var.direccion);
     }
 }

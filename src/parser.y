@@ -21,6 +21,7 @@
 #include <cstdio>
 #include "semantica.hpp"
 #include "cuadruplos.hpp"
+#include "memoria.hpp"
 
 int yylex();                      /* el scanner (lo genera Flex) */
 void yyerror(const char* msg);    /* reporta un error de sintaxis */
@@ -32,6 +33,9 @@ Semantica semantica;
 
 /* Generador de codigo intermedio: guarda las pilas y la fila de cuadruplos */
 GeneradorCuadruplos cuadruplos;
+
+/* Reparte las direcciones virtuales de variables, temporales y constantes */
+Memoria memoria;
 %}
 
 /* Mensajes de error con "unexpected X, expecting Y" (sintaxis de Bison 2.x) */
@@ -84,14 +88,26 @@ GeneradorCuadruplos cuadruplos;
 
 /* Puntos neuralgicos:
      PN1  a PN10  -> metodos de Semantica           (src/semantica.hpp)   Etapa 2
-     PN11 a PN22  -> metodos de GeneradorCuadruplos (src/cuadruplos.hpp)  Etapa 3 */
+     PN11 a PN22  -> metodos de GeneradorCuadruplos (src/cuadruplos.hpp)  Etapa 3
+     PN23 a PN37  -> saltos, if, while y funciones  (src/cuadruplos.hpp)  Etapa 4
+   Algunos puntos llaman a los dos: primero a semantica (revisa y busca en
+   las tablas) y luego a cuadruplos (genera el codigo con lo que encontro). */
 
 /* ---------- Programa y variables ---------- */
 
-/* program nombre; variables funciones main { ... } end */
+/* program nombre; variables funciones main { ... } end
+   El primer cuadruplo es un goto a main (PN23), porque el codigo de las
+   funciones queda antes. Al llegar a main se rellena ese goto (PN24). */
 programa
-    : PROGRAM ID { semantica.iniciarPrograma($2, @2.first_line); }   /* PN1 */
-      SEMICOLON vars_opc funcs_list MAIN body END
+    : PROGRAM ID
+      { semantica.iniciarPrograma($2, @2.first_line);   /* PN1 */
+        cuadruplos.iniciarPrograma(); }                 /* PN23 */
+      SEMICOLON vars_opc funcs_list MAIN
+      { semantica.iniciarMain(cuadruplos.siguiente());  /* PN24 */
+        cuadruplos.iniciarMain(); }
+      body END
+      { cuadruplos.terminarPrograma();                  /* PN25 */
+        semantica.terminarPrograma(); }
     ;
 
 /* Las variables son opcionales */
@@ -141,11 +157,16 @@ type
 
 /* ---------- Funciones ---------- */
 
-/* void f(a : int) [ var x : int; { ... } ]; */
+/* void f(a : int) [ var x : int; { ... } ];
+   Antes del cuerpo se guarda en que cuadruplo empieza la funcion (PN31):
+   ese numero lo usa el gosub de cada llamada. Al final va un endfunc (PN32). */
 funcs
     : func_type ID { semantica.iniciarFuncion($1, $2, @2.first_line); }   /* PN4 */
-      LPAREN params RPAREN LBRACKET vars_opc body RBRACKET SEMICOLON
-      { semantica.terminarFuncion(); }                                   /* PN6 */
+      LPAREN params RPAREN LBRACKET vars_opc
+      { semantica.fijarInicioFuncion(cuadruplos.siguiente()); }           /* PN31 */
+      body RBRACKET SEMICOLON
+      { cuadruplos.terminarFuncion();                                     /* PN32 */
+        semantica.terminarFuncion(); }                                    /* PN6 */
     ;
 
 func_type
@@ -197,29 +218,34 @@ statement
    la expresion se genera el cuadruplo de la asignacion (PN19). */
 assign
     : ID ASSIGN
-      { cuadruplos.agregarOperando($1, semantica.usarVariable($1, @1.first_line));   /* PN7, PN11 */
-        cuadruplos.agregarOperador("="); }                                           /* PN12 */
+      { cuadruplos.agregarVariable(semantica.usarVariable($1, @1.first_line));   /* PN7, PN11 */
+        cuadruplos.agregarOperador("="); }                                       /* PN12 */
       expresion SEMICOLON
-      { cuadruplos.generarAsignacion(@1.first_line); }                               /* PN19 */
+      { cuadruplos.generarAsignacion($1, @1.first_line); }                       /* PN19 */
     ;
 
 /* if (expresion) estatuto else estatuto;
-   Los saltos del if se generan en la Etapa 4. Por ahora solo se saca
-   de la pila el resultado de la condicion. */
+   Despues de la condicion va un gotof (PN26): si es falsa se brinca la
+   parte verdadera. Con else, la parte verdadera termina con un goto que
+   se brinca el else (PN27). Al final se rellena el salto pendiente (PN28). */
 condition
-    : IF LPAREN expresion RPAREN { cuadruplos.descartarOperando(); }
-      statement else_opc SEMICOLON
+    : IF LPAREN expresion RPAREN { cuadruplos.generarGotoFalso(@1.first_line); }   /* PN26 */
+      statement else_opc SEMICOLON { cuadruplos.terminarIf(); }                    /* PN28 */
     ;
 
 else_opc
-    : ELSE statement
+    : ELSE { cuadruplos.generarElse(); }   /* PN27 */
+      statement
     | /* vacio */
     ;
 
-/* while (expresion) do estatuto;   (los saltos se generan en la Etapa 4) */
+/* while (expresion) do estatuto;
+   Se guarda donde empieza la condicion (PN29). Si es falsa, el gotof sale
+   del ciclo (PN26). Al final se regresa a evaluar la condicion (PN30). */
 cycle
-    : WHILE LPAREN expresion RPAREN { cuadruplos.descartarOperando(); }
-      DO statement SEMICOLON
+    : WHILE { cuadruplos.iniciarWhile(); }                                         /* PN29 */
+      LPAREN expresion RPAREN { cuadruplos.generarGotoFalso(@1.first_line); }      /* PN26 */
+      DO statement SEMICOLON { cuadruplos.terminarWhile(); }                       /* PN30 */
     ;
 
 /* print(expresion, "letrero", ...);  se genera un cuadruplo print por cada cosa */
@@ -240,15 +266,15 @@ print_list
 /* read(id); */
 read
     : READ LPAREN ID RPAREN SEMICOLON
-      { semantica.usarVariable($3, @3.first_line);   /* PN7 */
-        cuadruplos.generarRead($3); }                /* PN22 */
+      { cuadruplos.generarRead(semantica.usarVariable($3, @3.first_line)); }   /* PN7, PN22 */
     ;
 
-/* return expresion;   (su cuadruplo se genera en la etapa de funciones) */
+/* return expresion;
+   Se revisa que este dentro de una funcion int o float (PN10) y se genera
+   el cuadruplo que guarda el valor y sale de la funcion (PN37). */
 return_st
     : RETURN expresion SEMICOLON
-      { semantica.validarReturn(@1.first_line);   /* PN10 */
-        cuadruplos.descartarOperando(); }
+      { cuadruplos.generarReturn(semantica.validarReturn(@1.first_line), @1.first_line); }   /* PN10, PN37 */
     ;
 
 /* Llamada como estatuto (con ';'): puede ser de cualquier funcion, incluso void */
@@ -257,21 +283,24 @@ f_call
     ;
 
 /* Llamada como valor dentro de una expresion (sin ';').
+   Al leer "id (" se revisa que la funcion exista (PN8) y se genera el
+   era (PN33). Al cerrar el parentesis se genera el gosub (PN35).
    Regresa el nombre de la funcion para que "factor" lo pueda usar. */
 f_call_expr
-    : ID LPAREN args RPAREN
-      { semantica.llamarFuncion($1, @1.first_line); $$ = $1; }   /* PN8 */
+    : ID LPAREN
+      { cuadruplos.iniciarLlamada(semantica.llamarFuncion($1, @1.first_line)); }   /* PN8, PN33 */
+      args RPAREN
+      { cuadruplos.terminarLlamada($1, @1.first_line); $$ = $1; }                  /* PN35 */
     ;
 
-/* Argumentos de la llamada. Sus cuadruplos se generan en la etapa de
-   funciones; por ahora cada resultado solo se saca de la pila. */
+/* Argumentos de la llamada: cada uno genera un cuadruplo param (PN34) */
 args
-    : expresion { cuadruplos.descartarOperando(); } args_p
+    : expresion { cuadruplos.agregarArgumento(@1.first_line); } args_p           /* PN34 */
     | /* vacio */
     ;
 
 args_p
-    : COMMA expresion { cuadruplos.descartarOperando(); } args_p
+    : COMMA expresion { cuadruplos.agregarArgumento(@2.first_line); } args_p     /* PN34 */
     | /* vacio */
     ;
 
@@ -340,20 +369,20 @@ factor
     | MINUS valor { cuadruplos.generarNegativo(); }     /* PN18 */
     | valor
     | f_call_expr
-      /* PN9 revisa que la funcion regrese un valor. Ese valor queda como
-         operando (PN11); el cuadruplo de la llamada se genera despues. */
-      { cuadruplos.agregarOperando($1, semantica.usarLlamadaComoValor($1, @1.first_line)); }
+      /* PN9 revisa que la funcion regrese un valor. PN36 copia ese valor
+         a un temporal, que queda como operando de la expresion. */
+      { cuadruplos.agregarResultadoLlamada(semantica.usarLlamadaComoValor($1, @1.first_line)); }
     ;
 
 /* Una variable o una constante: es un operando */
 valor
-    : ID { cuadruplos.agregarOperando($1, semantica.usarVariable($1, @1.first_line)); }   /* PN7, PN11 */
+    : ID { cuadruplos.agregarVariable(semantica.usarVariable($1, @1.first_line)); }   /* PN7, PN11 */
     | cte
     ;
 
 cte
-    : CTE_INT    { cuadruplos.agregarOperando($1, Tipo::ENTERO); }     /* PN11 */
-    | CTE_FLOAT  { cuadruplos.agregarOperando($1, Tipo::FLOTANTE); }   /* PN11 */
+    : CTE_INT    { cuadruplos.agregarConstante($1, Tipo::ENTERO); }     /* PN11 */
+    | CTE_FLOAT  { cuadruplos.agregarConstante($1, Tipo::FLOTANTE); }   /* PN11 */
     ;
 
 %%

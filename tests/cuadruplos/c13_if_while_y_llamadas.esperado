@@ -1,0 +1,35 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    goto      _            _            5
+  2    *         3000         7000         5000
+  3    return    5000         _            1002
+  4    endfunc   _            _            _
+  5    >         1000         1001         5000
+  6    gotof     5000         _            9
+  7    =         7001         _            1000
+  8    goto      _            _            10
+  9    =         7000         _            1000
+  10   <         1000         7002         5001
+  11   gotof     5001         _            15
+  12   +         1000         7001         5002
+  13   =         5002         _            1000
+  14   goto      _            _            10
+  15   era       _            _            doble
+  16   +         1000         7001         5003
+  17   param     5003         _            3000
+  18   gosub     doble        _            2
+  19   era       _            _            doble
+  20   param     1000         _            3000
+  21   gosub     doble        _            2
+  22   =         1002         _            5004
+  23   +         5004         7001         5005
+  24   =         5005         _            1001
+  25   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  7000       int      2
+  7001       int      1
+  7002       int      10
+
+Programa valido
