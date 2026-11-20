@@ -1,0 +1,8 @@
+program p;
+var x : float;
+void f(a : int, b : float, c : int) [ { print(a); } ];
+main {
+    f(1.5, 2, x);
+    f(1, 2.5, 3);
+}
+end

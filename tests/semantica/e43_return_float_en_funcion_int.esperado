@@ -1,0 +1,3 @@
+Error semantico (linea 2): la funcion 'f' es int y no puede regresar un valor float
+Error semantico (linea 3): la funcion 'g' es int y no puede regresar un valor float
+Programa invalido

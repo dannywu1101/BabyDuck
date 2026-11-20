@@ -1,0 +1,26 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    goto      _            _            7
+  2    +         3000         3001         5000
+  3    =         5000         _            4000
+  4    /         4000         7000         6000
+  5    return    6000         _            2001
+  6    endfunc   _            _            _
+  7    era       _            _            promedio
+  8    param     7001         _            3000
+  9    +         7002         7003         5000
+  10   param     5000         _            3001
+  11   gosub     promedio     _            2
+  12   =         2001         _            6000
+  13   =         6000         _            2000
+  14   print     _            _            2000
+  15   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  7000       int      2
+  7001       int      4
+  7002       int      6
+  7003       int      1
+
+Programa valido

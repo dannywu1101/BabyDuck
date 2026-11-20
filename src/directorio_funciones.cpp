@@ -33,13 +33,16 @@ static std::string firma(const FuncInfo& funcion) {
 }
 
 void DirectorioFunciones::imprimir() const {
-    // Primero la lista de funciones con su tipo y su firma
+    // Primero la lista de funciones con su tipo, su firma, el cuadruplo
+    // donde empiezan y la direccion donde dejan el valor que regresan
     printf("Directorio de Funciones\n");
-    printf("  %-14s %-8s %-6s %s\n", "nombre", "tipo", "linea", "parametros");
+    printf("  %-14s %-8s %-6s %-16s %-7s %s\n", "nombre", "tipo", "linea", "parametros",
+           "inicio", "retorno");
     for (const FuncInfo& funcion : funciones) {
         const char* tipo = funcion.esPrograma ? "program" : nombreTipo(funcion.tipoRetorno);
-        printf("  %-14s %-8s %-6d %s\n", funcion.nombre.c_str(), tipo, funcion.linea,
-               firma(funcion).c_str());
+        std::string retorno = funcion.dirRetorno < 0 ? "-" : std::to_string(funcion.dirRetorno);
+        printf("  %-14s %-8s %-6d %-16s %-7d %s\n", funcion.nombre.c_str(), tipo, funcion.linea,
+               firma(funcion).c_str(), funcion.inicio, retorno.c_str());
     }
 
     // Despues, la tabla de variables de cada una
@@ -47,5 +50,8 @@ void DirectorioFunciones::imprimir() const {
         printf("\nTabla de Variables: %s%s\n", funcion.nombre.c_str(),
                funcion.esPrograma ? " (globales)" : "");
         funcion.variables.imprimir();
+        printf("  Memoria: variables int=%d float=%d, temporales int=%d float=%d\n",
+               funcion.variablesInt, funcion.variablesFloat,
+               funcion.temporalesInt, funcion.temporalesFloat);
     }
 }

@@ -1,14 +1,20 @@
 Fila de cuadruplos
   #    operador  izquierdo    derecho      resultado
-  1    -         b            c            t1
-  2    -         t1           d            t2
-  3    =         t2           _            a
-  4    /         b            c            t3
-  5    /         t3           d            t4
-  6    =         t4           _            a
-  7    -         b            c            t5
-  8    +         t5           d            t6
-  9    -         t6           1            t7
-  10   =         t7           _            a
+  1    goto      _            _            2
+  2    -         1001         1002         5000
+  3    -         5000         1003         5001
+  4    =         5001         _            1000
+  5    /         1001         1002         5002
+  6    /         5002         1003         5003
+  7    =         5003         _            1000
+  8    -         1001         1002         5004
+  9    +         5004         1003         5005
+  10   -         5005         7000         5006
+  11   =         5006         _            1000
+  12   end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  7000       int      1
 
 Programa valido

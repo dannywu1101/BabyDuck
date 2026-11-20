@@ -1,0 +1,9 @@
+program p;
+var r : int;
+int doble(a : int) [ { return a * 2; } ];
+void nada() [ { print(r); } ];
+main {
+    r = doble(1, 2);
+    nada(r);
+}
+end

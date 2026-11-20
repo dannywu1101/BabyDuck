@@ -1,9 +1,14 @@
 Fila de cuadruplos
   #    operador  izquierdo    derecho      resultado
-  1    read      _            _            a
-  2    read      _            _            x
-  3    +         x            a            t1
-  4    =         t1           _            x
-  5    print     _            _            x
+  1    goto      _            _            2
+  2    read      _            _            1000
+  3    read      _            _            2000
+  4    +         2000         1000         6000
+  5    =         6000         _            2000
+  6    print     _            _            2000
+  7    end       _            _            _
+
+Tabla de constantes
+  (sin constantes)
 
 Programa valido

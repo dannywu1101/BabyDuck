@@ -1,0 +1,13 @@
+program p;
+var n, i : int; total : float;
+float mitad(x : float) [ { return x / 2; } ];
+main {
+    n = 5;
+    i = 0;
+    while (i < n) do [
+        if (i != 2) total = total + mitad(i); else print("dos");;
+        i = i + 1;
+    ];
+    print("total", total);
+}
+end

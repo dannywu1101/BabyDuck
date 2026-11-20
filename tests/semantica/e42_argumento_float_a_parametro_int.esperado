@@ -1,0 +1,3 @@
+Error semantico (linea 5): argumento 1 de 'f': no se puede pasar un valor float a un parametro int
+Error semantico (linea 5): argumento 3 de 'f': no se puede pasar un valor float a un parametro int
+Programa invalido

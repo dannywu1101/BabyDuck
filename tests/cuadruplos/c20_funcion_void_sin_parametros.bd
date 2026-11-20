@@ -1,0 +1,9 @@
+program p;
+var a : int;
+void saluda() [ { print("hola"); } ];
+main {
+    saluda();
+    a = 1;
+    saluda();
+}
+end

@@ -1,18 +1,20 @@
 Directorio de Funciones
-  nombre         tipo     linea  parametros
-  ejemplo        program  1      -
-  suma           void     5      (int, int)
+  nombre         tipo     linea  parametros       inicio  retorno
+  ejemplo        program  1      -                7       -
+  suma           void     5      (int, int)       2       -
 
 Tabla de Variables: ejemplo (globales)
-  nombre         tipo   categoria        linea
-  x              int    variable global  2
-  y              int    variable global  2
-  z              float  variable global  3
+  nombre         tipo   categoria        linea  direccion
+  x              int    variable global  2      1000
+  y              int    variable global  2      1001
+  z              float  variable global  3      2000
+  Memoria: variables int=2 float=1, temporales int=3 float=0
 
 Tabla de Variables: suma
-  nombre         tipo   categoria        linea
-  a              int    parametro        5
-  b              int    parametro        5
-  r              int    variable local   6
+  nombre         tipo   categoria        linea  direccion
+  a              int    parametro        5      3000
+  b              int    parametro        5      3001
+  r              int    variable local   6      3002
+  Memoria: variables int=3 float=0, temporales int=1 float=0
 
 Programa valido

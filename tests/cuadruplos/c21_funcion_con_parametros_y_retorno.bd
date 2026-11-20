@@ -1,0 +1,11 @@
+program p;
+var r : float;
+float promedio(a : int, b : int) [
+    var s : float;
+    { s = a + b; return s / 2; }
+];
+main {
+    r = promedio(4, 6 + 1);
+    print(r);
+}
+end

@@ -1,0 +1,10 @@
+program ejemplo;
+var a, b : int;
+int doble(n : int) [ { return n * 2; } ];
+main {
+    a = 3;
+    while (a < 10) do a = a + 1;;
+    if (a > b) b = doble(a) + 1; else b = 0;;
+    print("b vale", b);
+}
+end

@@ -1,0 +1,8 @@
+program p;
+var x : float; a : int;
+main {
+    if (x) a = 1;;
+    if (x + 1) a = 1; else a = 2;;
+    if (a) a = 3;;
+}
+end

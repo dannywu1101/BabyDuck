@@ -1,0 +1,13 @@
+program p;
+var gi1, gi2 : int; gf1 : float;
+void f(pi : int, pf : float) [
+    var li : int; lf : float;
+    { li = pi + 1; lf = pf * 2.5; print("local", li, lf); }
+];
+main {
+    gi1 = 1 + 2;
+    gf1 = gi1 / 2.5;
+    gi2 = gi1 > 2;
+    print("global", gf1);
+}
+end

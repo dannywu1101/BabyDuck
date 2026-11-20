@@ -1,0 +1,19 @@
+Fila de cuadruplos
+  #    operador  izquierdo    derecho      resultado
+  1    goto      _            _            2
+  2    <         1000         1001         5000
+  3    gotof     5000         _            7
+  4    =         7000         _            1000
+  5    =         7001         _            1001
+  6    goto      _            _            8
+  7    =         7002         _            1000
+  8    print     _            _            1000
+  9    end       _            _            _
+
+Tabla de constantes
+  direccion  tipo     valor
+  7000       int      1
+  7001       int      2
+  7002       int      3
+
+Programa valido

@@ -1,0 +1,10 @@
+program p;
+var a : int; x : float;
+main {
+    a = 1 + 1;
+    a = a * 1 + 2;
+    x = 1.0 + 1.0;
+    a = -a;
+    print("a", a, "a", 0);
+}
+end

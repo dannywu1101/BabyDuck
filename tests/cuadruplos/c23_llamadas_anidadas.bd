@@ -1,0 +1,8 @@
+program p;
+var r : int;
+int doble(n : int) [ { return n * 2; } ];
+int suma(a : int, b : int) [ { return a + b; } ];
+main {
+    r = suma(doble(1), suma(2, 3)) * doble(4);
+}
+end

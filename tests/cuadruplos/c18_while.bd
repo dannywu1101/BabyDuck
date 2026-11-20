@@ -1,0 +1,8 @@
+program p;
+var i : int;
+main {
+    i = 0;
+    while (i < 3) do [ print(i); i = i + 1; ];
+    print("fin");
+}
+end
