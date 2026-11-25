@@ -69,6 +69,9 @@ public:
     // Acceso de solo lectura al directorio (para imprimirlo con --tablas)
     const DirectorioFunciones& directorio() const { return directorio_; }
 
+    // La entrada del programa: dice cuanta memoria ocupan las globales y main
+    const FuncInfo* programa() const { return directorio_.buscar(nombrePrograma); }
+
 private:
     // Un id de "var a, b : int;" que todavia no sabe su tipo
     struct IdPendiente {

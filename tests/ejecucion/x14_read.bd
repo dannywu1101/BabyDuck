@@ -1,0 +1,10 @@
+program p;
+var a, b : int; x : float;
+main {
+    read(a);
+    read(b);
+    read(x);
+    print("suma", a + b);
+    print("x por 2", x * 2);
+}
+end

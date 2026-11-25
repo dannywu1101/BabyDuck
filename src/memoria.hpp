@@ -1,5 +1,5 @@
 // ============================================================
-// BabyDuck - Direcciones virtuales (Etapa 4)
+// BabyDuck - Direcciones virtuales (Etapas 4 y 5)
 //
 // En los cuadruplos ya no se usan nombres (a, b, t1), sino numeros
 // llamados DIRECCIONES VIRTUALES. Cada variable, temporal y constante
@@ -17,6 +17,9 @@
 //
 // Las locales y los temporales se vuelven a contar desde el inicio en
 // cada funcion (y en main), porque cada funcion tiene su propia memoria.
+//
+// Esta clase solo REPARTE direcciones mientras se compila. Los valores
+// se guardan al ejecutar, en memoria_ejecucion.hpp (Etapa 5).
 // ============================================================
 #ifndef MEMORIA_HPP
 #define MEMORIA_HPP
@@ -56,7 +59,6 @@ public:
     // Imprime la tabla de constantes (modo --cuadruplos)
     void imprimirConstantes() const;
 
-private:
     // Una constante con la direccion que le toco
     struct Constante {
         std::string texto;   // como se escribio en el programa
@@ -64,6 +66,10 @@ private:
         int direccion;
     };
 
+    // Las constantes del programa (la maquina virtual las carga a su memoria)
+    const std::vector<Constante>& listaConstantes() const { return constantes; }
+
+private:
     int usados[NUM_BLOQUES] = {};            // direcciones repartidas de cada bloque
     HashTable<std::string, int> indice;      // texto de la constante -> direccion
     std::vector<Constante> constantes;       // las constantes, en orden de aparicion

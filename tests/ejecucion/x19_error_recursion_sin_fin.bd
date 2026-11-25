@@ -1,0 +1,6 @@
+program p;
+int f(n : int) [ { return f(n + 1); } ];
+main {
+    print(f(1));
+}
+end

@@ -1,0 +1,12 @@
+program p;
+var contador : int;
+void sumar(cuanto : int) [ { contador = contador + cuanto; } ];
+void saludar() [ { print("hola"); } ];
+main {
+    saludar();
+    sumar(5);
+    sumar(10);
+    saludar();
+    print(contador);
+}
+end

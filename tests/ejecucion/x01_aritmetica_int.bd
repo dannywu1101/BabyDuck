@@ -1,0 +1,10 @@
+program p;
+var a, b : int;
+main {
+    a = 7;
+    b = 2;
+    print(a + b, a - b, a * b, a / b);
+    print(a + b * 3, (a + b) * 3);
+    print(-a + 1, 10 - 4 - 3, 20 / 2 / 5);
+}
+end

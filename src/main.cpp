@@ -1,5 +1,5 @@
 // ============================================================
-// BabyDuck - Programa principal (Etapa 4)
+// BabyDuck - Programa principal (Etapa 5)
 //
 // Uso:
 //   ./babyduck archivo.bd                -> analiza lexico, sintaxis y semantica
@@ -8,14 +8,18 @@
 //                                           Funciones y las Tablas de Variables
 //   ./babyduck --cuadruplos archivo.bd   -> analiza e imprime la fila de cuadruplos
 //                                           y la tabla de constantes
+//   ./babyduck --ejecutar archivo.bd     -> analiza y, si no hay errores, ejecuta
+//                                           el programa en la maquina virtual
 //   ./babyduck --cubo                    -> imprime el cubo semantico
 //
-// Codigo de salida: 0 = programa valido, 1 = hay errores, 2 = uso incorrecto
+// Codigo de salida: 0 = programa valido, 1 = hay errores, 2 = uso incorrecto,
+//                   3 = error al ejecutar (por ejemplo, division entre cero)
 // ============================================================
 #include <cstdio>
 #include <cstring>
 #include "cuadruplos.hpp"
 #include "cubo_semantico.hpp"
+#include "maquina_virtual.hpp"
 #include "memoria.hpp"
 #include "semantica.hpp"
 #include "parser.tab.hpp"
@@ -65,7 +69,7 @@ static int dumpTokens() {
 
 // Analiza el programa completo. yyparse() va pidiendo tokens al scanner
 // y ejecuta los puntos neuralgicos, que llenan las tablas y los cuadruplos.
-static int parseProgram(bool showTables, bool showQuads) {
+static int parseProgram(bool showTables, bool showQuads, bool run) {
     int result = yyparse();
     bool valido = result == 0 && lexErrors == 0 && semantica.errores() == 0;
 
@@ -80,6 +84,13 @@ static int parseProgram(bool showTables, bool showQuads) {
         printf("\n");
         memoria.imprimirConstantes();
         printf("\n");
+    }
+
+    // Al ejecutar solo se ve la salida del programa (si fue valido)
+    if (run && valido) {
+        MaquinaVirtual maquina(cuadruplos.lista(), semantica, memoria);
+        maquina.ejecutar();
+        return 0;
     }
 
     printf(valido ? "Programa valido\n" : "Programa invalido\n");
@@ -98,9 +109,10 @@ int main(int argc, char* argv[]) {
     bool onlyTokens = strcmp(opcion, "--tokens") == 0;
     bool showTables = strcmp(opcion, "--tablas") == 0;
     bool showQuads  = strcmp(opcion, "--cuadruplos") == 0;
+    bool run        = strcmp(opcion, "--ejecutar") == 0;
 
-    if (argc != 2 && !onlyTokens && !showTables && !showQuads) {
-        fprintf(stderr, "Uso: %s [--tokens | --tablas | --cuadruplos] archivo.bd\n", argv[0]);
+    if (argc != 2 && !onlyTokens && !showTables && !showQuads && !run) {
+        fprintf(stderr, "Uso: %s [--tokens | --tablas | --cuadruplos | --ejecutar] archivo.bd\n", argv[0]);
         fprintf(stderr, "     %s --cubo\n", argv[0]);
         return 2;
     }
@@ -113,7 +125,7 @@ int main(int argc, char* argv[]) {
         return 2;
     }
 
-    int status = onlyTokens ? dumpTokens() : parseProgram(showTables, showQuads);
+    int status = onlyTokens ? dumpTokens() : parseProgram(showTables, showQuads, run);
     fclose(yyin);
     return status;
 }

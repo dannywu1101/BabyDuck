@@ -1,0 +1,13 @@
+program p;
+var i, suma : int;
+main {
+    i = 1;
+    suma = 0;
+    while (i < 11) do [
+        suma = suma + i;
+        i = i + 1;
+    ];
+    print("suma del 1 al 10", suma);
+    while (i < 0) do print("este letrero no sale");;
+}
+end

@@ -1,0 +1,16 @@
+program p;
+int primerMultiplo(de : int, desde : int) [
+    var i : int;
+    {
+        i = desde;
+        while (i < 1000) do [
+            if (i / de * de != i) i = i + 1; else return i;;
+        ];
+        return 0;
+    }
+];
+main {
+    print(primerMultiplo(7, 30));
+    print(primerMultiplo(5, 11));
+}
+end

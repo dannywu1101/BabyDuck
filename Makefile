@@ -1,4 +1,4 @@
-# BabyDuck - Etapa 4 (Flex + Bison + C++)
+# BabyDuck - Etapa 5 (Flex + Bison + C++)
 #
 #   make        genera el parser y el scanner, y compila ./babyduck
 #   make test   corre todo el test-plan
@@ -12,7 +12,8 @@ TARGET   = babyduck
 
 # Codigo propio (el parser y el scanner los generan Bison y Flex)
 SOURCES  = src/main.cpp src/semantica.cpp src/directorio_funciones.cpp \
-           src/tabla_variables.cpp src/cubo_semantico.cpp src/cuadruplos.cpp src/memoria.cpp
+           src/tabla_variables.cpp src/cubo_semantico.cpp src/cuadruplos.cpp src/memoria.cpp \
+           src/memoria_ejecucion.cpp src/maquina_virtual.cpp
 # Si cambia cualquier header, se vuelve a compilar
 HEADERS  = $(wildcard src/*.hpp include/*.h)
 

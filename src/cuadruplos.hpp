@@ -128,6 +128,9 @@ public:
     // Imprime la fila de cuadruplos (modo --cuadruplos)
     void imprimir() const;
 
+    // La fila completa (la maquina virtual la recorre para ejecutarla)
+    const std::vector<Cuadruplo>& lista() const { return fila; }
+
 private:
     // Una llamada que se esta leyendo: f(a, b ...
     struct Llamada {

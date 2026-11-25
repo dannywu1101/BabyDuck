@@ -1,0 +1,11 @@
+program p;
+var x, y : float; n : int;
+main {
+    x = 7.0;
+    n = 2;
+    y = x / n;
+    print(y, x * 1.5, x - 0.25);
+    y = 4;
+    print(y, y / 8);
+}
+end

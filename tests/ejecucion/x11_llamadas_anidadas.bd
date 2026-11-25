@@ -1,0 +1,9 @@
+program p;
+int doble(n : int) [ { return n * 2; } ];
+int suma(a : int, b : int) [ { return a + b; } ];
+main {
+    print(doble(doble(doble(1))));
+    print(suma(doble(3), suma(1, doble(2))));
+    print(suma(suma(1, 2), suma(3, 4)) * doble(5));
+}
+end

@@ -1,0 +1,13 @@
+program p;
+float mezcla(a : int, x : float, b : int, y : float) [
+    var t : float;
+    {
+        t = a + x;
+        return t * b - y;
+    }
+];
+main {
+    print(mezcla(1, 0.5, 4, 1.0));
+    print(mezcla(2, 3, 2, 0.5));
+}
+end

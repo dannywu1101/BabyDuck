@@ -1,0 +1,16 @@
+program p;
+var i : int;
+int factorial(n : int) [
+    {
+        if (n < 2) return 1;;
+        return n * factorial(n - 1);
+    }
+];
+main {
+    i = 0;
+    while (i < 8) do [
+        print(factorial(i));
+        i = i + 1;
+    ];
+}
+end

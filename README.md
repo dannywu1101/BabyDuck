@@ -1,4 +1,4 @@
-# BabyDuck – Compilador (Etapa 4: Direcciones virtuales, saltos y funciones)
+# BabyDuck – Compilador (Etapa 5: Memoria de ejecución y máquina virtual)
 
 Danny Wu · A01286362 · TC3002B Compiladores
 
@@ -27,6 +27,8 @@ compilador/
 │   ├── tabla_variables.*        # Tabla de Variables
 │   ├── cuadruplos.*             # pilas, fila de cuádruplos y traducción (Etapas 3 y 4)
 │   ├── memoria.*                # direcciones virtuales y tabla de constantes (Etapa 4)
+│   ├── memoria_ejecucion.*      # memoria al ejecutar: globales, constantes y pila de marcos (Etapa 5)
+│   ├── maquina_virtual.*        # ejecuta los cuádruplos (Etapa 5)
 │   ├── cubo_semantico.*         # cubo semántico
 │   ├── tipos.hpp                # tipos de dato (int, float, void)
 │   └── main.cpp                 # programa principal
@@ -39,6 +41,7 @@ compilador/
 │   ├── tablas/       # salida de --tablas (.bd + .esperado)
 │   ├── cubo/         # salida de --cubo
 │   ├── cuadruplos/   # salida de --cuadruplos (.bd + .esperado)
+│   ├── ejecucion/    # salida de --ejecutar (.bd + .esperado, y .entrada si usa read)
 │   └── run_tests.sh  # corre todo el test-plan
 ├── Makefile
 └── .gitignore
@@ -52,8 +55,9 @@ make                         # genera parser/scanner y compila ./babyduck
 ./babyduck --tokens a.bd     # solo muestra los tokens (línea, token, lexema)
 ./babyduck --tablas a.bd     # muestra el Directorio de Funciones y las Tablas de Variables
 ./babyduck --cuadruplos a.bd # muestra la fila de cuádruplos y la tabla de constantes
+./babyduck --ejecutar a.bd   # compila y ejecuta el programa en la máquina virtual
 ./babyduck --cubo            # muestra el cubo semántico
-make test                    # corre los 238 test-cases
+make test                    # corre los 263 test-cases
 make clean                   # borra lo generado
 ```
 
@@ -62,6 +66,7 @@ Códigos de salida:
 - `0`: programa válido.
 - `1`: hubo un error léxico, sintáctico o semántico.
 - `2`: uso incorrecto o el archivo no existe.
+- `3`: error de ejecución (división entre cero, `read` sin número, recursión sin fin).
 
 ## Direcciones virtuales
 
@@ -71,5 +76,11 @@ Códigos de salida:
 | Locales | 3000 – 3999 | 4000 – 4999 | |
 | Temporales | 5000 – 5999 | 6000 – 6999 | |
 | Constantes | 7000 – 7999 | 8000 – 8999 | 9000 – 9999 |
+
+## Memoria de ejecución
+
+- La dirección virtual es el índice: `bloque = (dirección - 1000) / 1000` dice el segmento y el tipo, y `posición = (dirección - 1000) % 1000` dice la casilla.
+- Globales y constantes existen una sola vez.
+- Locales y temporales viven en un **marco**. Cada llamada a una función tiene su marco, y los marcos se guardan en una pila.
 
 La documentación completa está en `../Documentacion_BabyDuck.md`.

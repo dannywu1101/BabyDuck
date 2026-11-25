@@ -1,0 +1,13 @@
+program p;
+var a : int;
+main {
+    a = 5;
+    if (a > 3) print("mayor que 3"); else print("no es mayor que 3");;
+    if (a < 3) print("menor que 3"); else print("no es menor que 3");;
+    if (a != 5) print("este letrero no sale");;
+    if (a > 0) [
+        if (a > 10) print("grande"); else print("chico");;
+    ];
+    print("fin");
+}
+end
