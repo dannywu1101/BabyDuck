@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# Test-plan de BabyDuck (Etapas 1 a 4)
+# Test-plan de BabyDuck (Etapas 1 a 5)
 #   tests/tokens/     -> salida de --tokens igual a *.esperado
 #   tests/validos/    -> el programa debe aceptarse (codigo 0)
 #   tests/sintaxis/   -> debe fallar con "Error sintactico"
@@ -9,6 +9,8 @@
 #   tests/tablas/     -> salida de --tablas igual a *.esperado
 #   tests/cubo/       -> salida de --cubo igual a cubo.esperado
 #   tests/cuadruplos/ -> salida de --cuadruplos igual a *.esperado
+#   tests/ejecucion/  -> salida de --ejecutar igual a *.esperado
+#                        (si existe *.entrada, es lo que lee el programa con read)
 #   Uso del programa  -> argumentos invalidos dan codigo 2
 #
 # Cada caso es un archivo .bd (un programa BabyDuck). Los .esperado
@@ -99,6 +101,20 @@ fi
 echo "== Cuadruplos =="
 expect_output cuadruplos --cuadruplos
 
+# Ejecucion: lo que imprime el programa en la maquina virtual debe ser
+# identico a lo esperado. Los casos x18 a x22 son errores de ejecucion.
+echo "== Ejecucion en la maquina virtual =="
+for f in ejecucion/*.bd; do
+    name=$(basename "$f" .bd)
+    input=/dev/null                                   # sin entrada, read falla
+    [ -f "ejecucion/$name.entrada" ] && input="ejecucion/$name.entrada"
+    if diff <($BIN --ejecutar "$f" < "$input" 2>&1) "ejecucion/$name.esperado" > /dev/null; then
+        ok "$name"
+    else
+        bad "$name" "salida distinta a lo esperado"
+    fi
+done
+
 # Uso incorrecto del programa: debe terminar con codigo 2
 expect_usage() {
     local name=$1
@@ -117,6 +133,7 @@ expect_usage "u05_demasiados_argumentos" --tokens validos/v01_minimo.bd extra
 expect_usage "u06_tablas_sin_archivo" --tablas
 expect_usage "u07_cubo_con_archivo" --cubo validos/v01_minimo.bd
 expect_usage "u08_cuadruplos_sin_archivo" --cuadruplos
+expect_usage "u09_ejecutar_sin_archivo" --ejecutar
 
 echo
 echo "Resultado: $pass pasaron, $fail fallaron"

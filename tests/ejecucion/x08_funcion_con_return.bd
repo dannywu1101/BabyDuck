@@ -1,0 +1,11 @@
+program p;
+var r : int; m : float;
+int cuadrado(n : int) [ { return n * n; } ];
+float promedio(a : float, b : float) [ { return (a + b) / 2; } ];
+main {
+    r = cuadrado(4) + cuadrado(3);
+    print(r);
+    m = promedio(3, 4);
+    print(m, promedio(1.5, 2.5));
+}
+end

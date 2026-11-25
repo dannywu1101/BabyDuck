@@ -1,0 +1,8 @@
+program p;
+var a : int;
+main {
+    a = 100000;
+    a = a * a;
+    print(a);
+}
+end

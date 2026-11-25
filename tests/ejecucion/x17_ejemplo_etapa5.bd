@@ -1,0 +1,23 @@
+program ejemplo;
+var n, i : int; total : float;
+int factorial(k : int) [
+    {
+        if (k < 2) return 1;;
+        return k * factorial(k - 1);
+    }
+];
+float mitad(x : float) [ { return x / 2; } ];
+void linea() [ { print("----------"); } ];
+main {
+    read(n);
+    linea();
+    i = 1;
+    while (i < n + 1) do [
+        print(factorial(i));
+        total = total + mitad(i);
+        i = i + 1;
+    ];
+    linea();
+    if (total > 5) print("total grande", total); else print("total chico", total);;
+}
+end
